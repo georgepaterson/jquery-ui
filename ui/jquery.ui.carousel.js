@@ -10,8 +10,8 @@
  *	jquery.ui.widget.js
  */
 (function($, undefined) {
-	$.widget("ui.carousel", {
-		version: "@VERSION",
+	$.widget('ui.carousel', {
+		version: '@VERSION',
     options: {
 			scroll: 3,
 			visible: 3,
@@ -202,7 +202,7 @@
 			 */
 			var self = this,
 				o = this.options;
-			if(!this.animated){
+			if(!this.animated) {
 				this.animated = true;
 				if ($('.ui-carousel-slide', this.element).css('left') == 'auto') {
 					current = 0;
@@ -217,13 +217,15 @@
 					this.currentItem = this.currentItem + this.options.scroll;
 				}
 				distance = current + distance;
-				$('.ui-carousel-slide', this.element).animate({left: distance + 'px'}, this.options.speed, this.options.easing, function() {
-					if(o.track) {
-						self._updateTracker();
+				$('.ui-carousel-slide', this.element).animate({left: distance + 'px'}, 
+					{duration: this.options.speed, easing: this.options.easing, complete: function() {
+						if(o.track) {
+							self._updateTracker();
+						}
+						self._navigationState();
+						self.animated = false;
 					}
-					self._navigationState();
-					self.animated = false;
-			  });
+				});
       }
 		}
 	});
