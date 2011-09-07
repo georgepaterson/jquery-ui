@@ -7,6 +7,7 @@ and logs, available at http://github.com/jquery/jquery-ui
 Brandon Aaron
 Paul Bakaus (paulbakaus.com)
 David Bolter
+Ray Brooks
 Rich Caloggero
 Chi Cheng (cloudream@gmail.com)
 Colin Clark (http://colin.atrc.utoronto.ca/)
@@ -22,6 +23,7 @@ Scott Jehl
 Cody Lindley
 Eduardo Lundgren (eduardolundgren@gmail.com)
 Todd Parker
+George Paterson
 John Resig
 Patty Toland
 Ca-Phun Ung (yelotofu.com)

@@ -11,7 +11,9 @@
 	<link rel="stylesheet" href="../demos.css">
 	<script>
 	$(function() {
-		$("#default").selectgroup();
+		$("#default, #test").selectgroup();
+		$("#test").selectgroup();
+		$("#test").selectgroup();
 	});
 	</script>
 </head>
@@ -20,6 +22,12 @@
 <div class="demo">
 
 <select id="default">
+	<option value="">Please select</option>
+	<option value="one">Option one</option>
+	<option value="two">Option two</option>
+	<option value="three">Option three</option>
+</select>
+<select id="test">
 	<option value="">Please select</option>
 	<option value="one">Option one</option>
 	<option value="two">Option two</option>
