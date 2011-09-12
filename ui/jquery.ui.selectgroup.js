@@ -32,18 +32,18 @@
 			$(this.element).hide();
 			this.placeholder.bind('click', function(event) {
 				event.preventDefault();
-
-				
-				if ($.ui.selectgroup.menu.isOpen) {
-					self._close();
+				if ($.ui.selectgroup.menu.past !== null) {
+					if ($.ui.selectgroup.menu.past !== self.element) {
+						self.close();
+					}
 				}
 				if (!self.isOpen) {
 					self.open();
-				}
+				} 
 				else {
 					self.close();
 				}
-				
+				$.ui.selectgroup.menu.past = self.element;
 			});
 		},
 		_init: function() {
@@ -94,24 +94,21 @@
 			this._index();
 			this.placeholder.addClass('ui-state-active');
 			$.ui.selectgroup.menu.show();
-			$.ui.selectgroup.menu.isOpen = true;
 			this.isOpen = true;
 		},
 		close: function() {
 			
 			$.ui.selectgroup.menu.hide();
 			this.placeholder.removeClass('ui-state-active');
-			$.ui.selectgroup.menu.isOpen = false;
 			this.isOpen = false;
 		},
 		_close: function() {
 			
 			$.ui.selectgroup.menu.hide();
-			$.ui.selectgroup.menu.isOpen = false;
 
 		}
 	})
 	$.ui.selectgroup.menu = $('<div class="ui-selectgroup-group"></div>');
 	$.ui.selectgroup.menu.initialised = false;
-	$.ui.selectgroup.menu.isOpen = false;
+	$.ui.selectgroup.menu.past = null;
 })(jQuery);
