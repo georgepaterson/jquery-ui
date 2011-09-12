@@ -20,8 +20,10 @@
 		_create: function() {
 			var self = this, 
 				options = this.options;
-			this.menu = $('<div class="ui-selectgroup-group"></div>');
-			$('body').append(this.menu);
+			if ($.ui.selectgroup.menu.initialised === false) {
+				$('body').append($.ui.selectgroup.menu);
+			}
+			$.ui.selectgroup.menu.initialised = true;
 			this.placeholder = $('<a href="#" class="ui-selectgroup ui-widget ui-state-default ui-corner-all"'
 				+ 'role="button" aria-haspopup="true" aria-owns="">'
 				+ '<span class="">Placeholder text</span>'
@@ -30,12 +32,18 @@
 			$(this.element).hide();
 			this.placeholder.bind('click', function(event) {
 				event.preventDefault();
+
+				
+				if ($.ui.selectgroup.menu.isOpen) {
+					self._close();
+				}
 				if (!self.isOpen) {
 					self.open();
 				}
 				else {
 					self.close();
 				}
+				
 			});
 		},
 		_init: function() {
@@ -70,7 +78,7 @@
 					$(list).appendTo(self.group);
 				}
 			});
-			$(this.menu).html(this.group);
+			$($.ui.selectgroup.menu).html(this.group);
 		},
 		destroy: function() {
 
@@ -84,13 +92,26 @@
 		open: function() {
 
 			this._index();
-			this.menu.show();
+			this.placeholder.addClass('ui-state-active');
+			$.ui.selectgroup.menu.show();
+			$.ui.selectgroup.menu.isOpen = true;
 			this.isOpen = true;
 		},
 		close: function() {
 			
-			this.menu.hide();
+			$.ui.selectgroup.menu.hide();
+			this.placeholder.removeClass('ui-state-active');
+			$.ui.selectgroup.menu.isOpen = false;
 			this.isOpen = false;
+		},
+		_close: function() {
+			
+			$.ui.selectgroup.menu.hide();
+			$.ui.selectgroup.menu.isOpen = false;
+
 		}
 	})
+	$.ui.selectgroup.menu = $('<div class="ui-selectgroup-group"></div>');
+	$.ui.selectgroup.menu.initialised = false;
+	$.ui.selectgroup.menu.isOpen = false;
 })(jQuery);
