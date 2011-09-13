@@ -9,7 +9,6 @@
  * jquery.ui.core.js
  * jquery.ui.widget.js
  */
-
 (function($, undefined) {
 	$.widget('ui.selectgroup', {
 		version: '@VERSION',
@@ -20,20 +19,21 @@
 		_create: function() {
 			var self = this, 
 				options = this.options;
-			if ($.ui.selectgroup.menu.initialised === false) {
-				$('body').append($.ui.selectgroup.menu);
+			if ($.ui.selectgroup.group.initialised === false) {
+				$('body').append($.ui.selectgroup.group);
+				$.ui.selectgroup.group.hide();
 			}
-			$.ui.selectgroup.menu.initialised = true;
-			this.placeholder = $('<a href="#" class="ui-selectgroup ui-widget ui-state-default ui-corner-all"'
+			$.ui.selectgroup.group.initialised = true;
+			this.placeholder = $('<a href="#" class="' + self.widgetBaseClass + ' ui-widget ui-state-default ui-corner-all"'
 				+ 'role="button" aria-haspopup="true" aria-owns="">'
 				+ '<span class="">Placeholder text</span>'
 				+ '<span class=""></span></a>');
 			$(this.element).after(this.placeholder);
 			$(this.element).hide();
-			this.placeholder.bind('click', function(event) {
+			this.placeholder.bind('click.selectgroup', function(event) {
 				event.preventDefault();
-				if ($.ui.selectgroup.menu.past !== null) {
-					if ($.ui.selectgroup.menu.past.element !== self.element) {
+				if ($.ui.selectgroup.group.past !== null) {
+					if ($.ui.selectgroup.group.past.element !== self.element) {
 						self.close();
 					}
 				}
@@ -43,7 +43,7 @@
 				else {
 					self.close();
 				}
-				$.ui.selectgroup.menu.past = self;
+				$.ui.selectgroup.group.past = self;
 			});
 		},
 		_init: function() {
@@ -61,11 +61,11 @@
 		_build: function() {
 			var self = this, 
 				options = this.options;
-			this.group = $('<ul class="ui-selectgroup-list"></ul>');
+			this.group = $('<ul class="' + self.widgetBaseClass + '-list"></ul>');
 			$.each(this.selectors, function() {
-				var list = '<li class="ui-selectgroup-item"><a href="#">'+ this.text +'</a></li>'
+				var list = '<li class="' + self.widgetBaseClass + '-item"><a href="#">'+ this.text +'</a></li>'
 				if (this.optgroup.length) {
-					var name = 'ui-selectgroup-optgroup-' + self.element.find('optgroup').index(this.optgroup);
+					var name = self.widgetBaseClass + '-optgroup-' + self.element.find('optgroup').index(this.optgroup);
 					if (self.group.find('li.' + name).length ) {
 						self.group.find('li.' + name + ' ul').append($(list));
 					}
@@ -78,7 +78,13 @@
 					$(list).appendTo(self.group);
 				}
 			});
-			$($.ui.selectgroup.menu).html(this.group);
+			$($.ui.selectgroup.group).html(this.group);
+			this._position();
+		},
+		_position: function() {
+			var coordinates = this.placeholder.offset();
+			coordinates.top += this.placeholder.height();
+			$($.ui.selectgroup.group).css({'top': coordinates.top, 'left': coordinates.left});
 		},
 		destroy: function() {
 
@@ -92,22 +98,17 @@
 		open: function() {
 			this._index();
 			this.placeholder.addClass('ui-state-active');
-			$.ui.selectgroup.menu.show();
+			$.ui.selectgroup.group.show();
 			this.isOpen = true;
 		},
 		close: function() {
-			$.ui.selectgroup.menu.hide();
-			$.ui.selectgroup.menu.past.placeholder.removeClass('ui-state-active');
+			$.ui.selectgroup.group.hide();
+			$.ui.selectgroup.group.past.placeholder.removeClass('ui-state-active');
 			this.placeholder.removeClass('ui-state-active');
 			this.isOpen = false;
-		},
-		_close: function() {
-			
-			$.ui.selectgroup.menu.hide();
-
 		}
 	})
-	$.ui.selectgroup.menu = $('<div class="ui-selectgroup-group"></div>');
-	$.ui.selectgroup.menu.initialised = false;
-	$.ui.selectgroup.menu.past = null;
+	$.ui.selectgroup.group = $('<div class="ui-selectgroup-group ui-widget ui-widget-content ui-corner-bottom"></div>');
+	$.ui.selectgroup.group.initialised = false;
+	$.ui.selectgroup.group.past = null;
 })(jQuery);
