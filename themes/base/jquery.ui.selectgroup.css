@@ -6,3 +6,5 @@
  * http://jquery.org/license
  *
  */
+.ui-selectgroup-group {position: absolute;}
+.ui-selectgroup-list {list-style: none; margin: 0; padding: 0;}
