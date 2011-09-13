@@ -33,7 +33,7 @@
 			this.placeholder.bind('click', function(event) {
 				event.preventDefault();
 				if ($.ui.selectgroup.menu.past !== null) {
-					if ($.ui.selectgroup.menu.past !== self.element) {
+					if ($.ui.selectgroup.menu.past.element !== self.element) {
 						self.close();
 					}
 				}
@@ -43,7 +43,7 @@
 				else {
 					self.close();
 				}
-				$.ui.selectgroup.menu.past = self.element;
+				$.ui.selectgroup.menu.past = self;
 			});
 		},
 		_init: function() {
@@ -90,15 +90,14 @@
 
 		},
 		open: function() {
-
 			this._index();
 			this.placeholder.addClass('ui-state-active');
 			$.ui.selectgroup.menu.show();
 			this.isOpen = true;
 		},
 		close: function() {
-			
 			$.ui.selectgroup.menu.hide();
+			$.ui.selectgroup.menu.past.placeholder.removeClass('ui-state-active');
 			this.placeholder.removeClass('ui-state-active');
 			this.isOpen = false;
 		},
