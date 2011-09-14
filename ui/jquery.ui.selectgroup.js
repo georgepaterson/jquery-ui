@@ -44,7 +44,14 @@
 					self.close();
 				}
 				$.ui.selectgroup.group.past = self;
-			});
+			});	
+			this._bind(document, {
+				click: function(event) {
+					if (self.isOpen && !$(event.target).closest('.ui-selectgroup').length ) {
+						self.close();
+					}
+				}
+			});		
 		},
 		_init: function() {
 
