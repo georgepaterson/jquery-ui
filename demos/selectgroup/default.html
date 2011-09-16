@@ -13,15 +13,24 @@
 	<script>
 	$(function() {
 		$(".select").selectgroup();
-		$("#test2").selectgroup();
 	});
 	</script>
+	<style>
+		label {
+			float: left;
+			padding: 5px;
+			margin: 0 10px 10px 0;
+		}
+		.ui-selectgroup {
+			margin: 0 0 10px;
+		}
+	</style>
 </head>
 <body>
 
 <div class="demo">
-
-<select id="default" class="select">
+<label for="test-one">Test one:</label>
+<select id="test-one" class="select">
 	<option value="">Please select</option>
 	<optgroup label="Option group one">
 		<option value="one">Option one</option>
@@ -35,15 +44,10 @@
 		<option value="three">Option six</option>
 	</optgroup>
 </select>
-<select id="test" class="select">
+<label for="test-two">Test two:</label>
+<select id="test-two" class="select">
 	<option value="">Please select</option>
-	<option value="one">Option one</option>
-	<option value="two">Option two</option>
-	<option value="three">Option three</option>
-</select>
-<select id="test2">
-	<option value="">Please select</option>
-	<option value="one">Option one</option>
+	<option selected="selected" value="one">Option one</option>
 	<option value="two">Option two</option>
 	<option value="three">Option three</option>
 	<option value="four">Option four</option>

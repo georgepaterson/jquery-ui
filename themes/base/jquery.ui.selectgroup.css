@@ -6,5 +6,14 @@
  * http://jquery.org/license
  *
  */
+
+.ui-selectgroup {display: block; overflow: hidden; position: relative; width: 200px; text-decoration: none;}
+.ui-selectgroup-copy {display: block; padding: 5px;}
+.ui-selectgroup-icon {position: absolute; top: 5px; right: 0;}
+.ui-selectgroup-group {width: 200px;}
 .ui-selectgroup-group {position: absolute;}
 .ui-selectgroup-list {list-style: none; margin: 0; padding: 0;}
+.ui-selectgroup-list li {}
+.ui-selectgroup-list a {display: block; padding: 5px; text-decoration: none;}
+.ui-selectgroup-optgroup {padding: 0 0 0 5px;}
+.ui-selectgroup-optgroup ul {list-style: none; margin: 0; padding: 0 0 0 5px;}
