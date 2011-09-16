@@ -24,12 +24,18 @@
 				$.ui.selectgroup.group.hide();
 			}
 			$.ui.selectgroup.group.initialised = true;
+			if ($(this.element).find('option:selected').length) {
+				this.copy = this.element.find('option:selected').text()
+			}
+			else {
+				this.copy = this.element.find('option').first().text()
+			}
 			this.placeholder = $('<a href="#" class="' + self.widgetBaseClass + ' ui-widget ui-state-default ui-corner-all"'
 				+ 'role="button" aria-haspopup="true" aria-owns="">'
-				+ '<span class="">Placeholder text</span>'
-				+ '<span class=""></span></a>');
-			$(this.element).after(this.placeholder);
-			$(this.element).hide();
+				+ '<span class="' + self.widgetBaseClass + '-copy">'+ this.copy +'</span>'
+				+ '<span class="' + self.widgetBaseClass + '-icon ui-icon ui-icon-triangle-1-s"></span></a>');
+			this.element.after(this.placeholder)
+				.hide();
 			this.placeholder.bind('click.selectgroup', function(event) {
 				event.preventDefault();
 				if ($.ui.selectgroup.group.past !== null) {
@@ -49,6 +55,7 @@
 				click: function(event) {
 					if (self.isOpen && !$(event.target).closest('.ui-selectgroup').length ) {
 						self.close();
+						$.ui.selectgroup.group.past = null;
 					}
 				}
 			});		
@@ -70,19 +77,33 @@
 				options = this.options;
 			this.group = $('<ul class="' + self.widgetBaseClass + '-list"></ul>');
 			$.each(this.selectors, function() {
-				var list = '<li class="' + self.widgetBaseClass + '-item"><a href="#">'+ this.text +'</a></li>'
+				var list = $('<li><a href="#">'+ this.text +'</a></li>');
 				if (this.optgroup.length) {
 					var name = self.widgetBaseClass + '-optgroup-' + self.element.find('optgroup').index(this.optgroup);
 					if (self.group.find('li.' + name).length ) {
-						self.group.find('li.' + name + ' ul').append($(list));
+						self.group.find('li.' + name + ' ul').append(list);
+						list.bind('click.selectgroup', function(event) {
+							event.preventDefault();
+							
+							
+						});
 					}
 					else {
-						var opt = '<li class="' + name + '"><span>'+ this.optgroup.attr('label') +'</span><ul>'+ list +'</ul></li>'
-						$(opt).appendTo(self.group)
+						var opt = '<li class="' + name + ' ' + self.widgetBaseClass + '-optgroup"><span>'+ this.optgroup.attr('label') +'</span><ul></ul></li>';
+						$(opt).appendTo(self.group).find('ul').append(list);
+						list.bind('click.selectgroup', function(event) {
+							event.preventDefault();
+							
+							
+						});
 					}
 				}
 				else {
-					$(list).appendTo(self.group);
+					list.appendTo(self.group).bind('click.selectgroup', function(event) {
+						event.preventDefault();
+						
+						
+					});
 				}
 			});
 			$($.ui.selectgroup.group).html(this.group);
@@ -110,7 +131,9 @@
 		},
 		close: function() {
 			$.ui.selectgroup.group.hide();
-			$.ui.selectgroup.group.past.placeholder.removeClass('ui-state-active');
+			if ($.ui.selectgroup.group.past !== null) {
+				$.ui.selectgroup.group.past.placeholder.removeClass('ui-state-active');
+			}
 			this.placeholder.removeClass('ui-state-active');
 			this.isOpen = false;
 		}
