@@ -12,7 +12,8 @@
 	<link rel="stylesheet" href="../demos.css">
 	<script>
 	$(function() {
-		$(".select").selectgroup();
+		$('#test-one').selectgroup();
+		$('#test-two').selectgroup({placeholder: true});
 	});
 	</script>
 	<style>
@@ -39,9 +40,9 @@
 	</optgroup>
 	<option value="seven">Option seven</option>
 	<optgroup label="Option group two">
-		<option value="one">Option four</option>
-		<option value="two">Option five</option>
-		<option value="three">Option six</option>
+		<option value="four">Option four</option>
+		<option value="five">Option five</option>
+		<option value="six">Option six</option>
 	</optgroup>
 </select>
 <label for="test-two">Test two:</label>

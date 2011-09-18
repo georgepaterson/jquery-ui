@@ -16,4 +16,5 @@
 .ui-selectgroup-list li {}
 .ui-selectgroup-list a {display: block; padding: 5px; text-decoration: none;}
 .ui-selectgroup-optgroup {padding: 0 0 0 5px;}
+.ui-selectgroup-optgroup span {display: block; padding: 5px 0;}
 .ui-selectgroup-optgroup ul {list-style: none; margin: 0; padding: 0 0 0 5px;}
