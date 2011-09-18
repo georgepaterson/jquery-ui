@@ -24,6 +24,7 @@
 				$.ui.selectgroup.group.hide();
 			}
 			$.ui.selectgroup.group.initialised = true;
+			console.log(self.element.find('option:selected'))
 			if ($(this.element).find('option:selected').length) {
 				this.copy = this.element.find('option:selected').text()
 			}
@@ -66,45 +67,49 @@
 		_index: function() {
 			this.selectors = $.map($('option', this.element), function(value) {
 				return {
+					element: $(value),
 					text: $(value).text(),
-					optgroup: $(value).parent('optgroup')
+					optgroup: $(value).parent('optgroup'),
+					value: $(value).attr('value')
 				};
 			});
 			this._build();
 		},
 		_build: function() {
 			var self = this, 
-				options = this.options;
+				options = this.options
+				hidden = false;
 			this.group = $('<ul class="' + self.widgetBaseClass + '-list"></ul>');
-			$.each(this.selectors, function() {
-				var list = $('<li><a href="#">'+ this.text +'</a></li>');
+			$.each(this.selectors, function(index) {
+				var list = $('<li><a href="#">'+ this.text +'</a></li>')
+					.bind('click.selectgroup', function(event) {
+						
+						event.preventDefault();
+						self.copy = self.selectors[index].text;
+						self.placeholder.find('.ui-selectgroup-copy').text(self.copy);
+						self.element.find('option:selected').removeAttr("selected");
+						$(self.selectors[index].element).attr('selected', 'selected');
+						
+					});
 				if (this.optgroup.length) {
 					var name = self.widgetBaseClass + '-optgroup-' + self.element.find('optgroup').index(this.optgroup);
 					if (self.group.find('li.' + name).length ) {
 						self.group.find('li.' + name + ' ul').append(list);
-						list.bind('click.selectgroup', function(event) {
-							event.preventDefault();
-							
-							
-						});
 					}
 					else {
 						var opt = '<li class="' + name + ' ' + self.widgetBaseClass + '-optgroup"><span>'+ this.optgroup.attr('label') +'</span><ul></ul></li>';
 						$(opt).appendTo(self.group).find('ul').append(list);
-						list.bind('click.selectgroup', function(event) {
-							event.preventDefault();
-							
-							
-						});
 					}
 				}
 				else {
-					list.appendTo(self.group).bind('click.selectgroup', function(event) {
-						event.preventDefault();
-						
-						
-					});
-				}
+					if (options.placeholder && index === 0) {
+						hidden = true;
+					}
+					if (!hidden) {
+						list.appendTo(self.group);
+					}
+					hidden = false;
+				}	
 			});
 			$($.ui.selectgroup.group).html(this.group);
 			this._position();
@@ -113,6 +118,15 @@
 			var coordinates = this.placeholder.offset();
 			coordinates.top += this.placeholder.height();
 			$($.ui.selectgroup.group).css({'top': coordinates.top, 'left': coordinates.left});
+		},
+		_focus: function() {
+			
+		},
+		_select: function() {
+			
+		},
+		change: function() {
+			
 		},
 		destroy: function() {
 
@@ -136,6 +150,9 @@
 			}
 			this.placeholder.removeClass('ui-state-active');
 			this.isOpen = false;
+		},
+		refresh: function() {
+			
 		}
 	})
 	$.ui.selectgroup.group = $('<div class="ui-selectgroup-group ui-widget ui-widget-content ui-corner-bottom"></div>');
