@@ -24,7 +24,6 @@
 				$.ui.selectgroup.group.hide();
 			}
 			$.ui.selectgroup.group.initialised = true;
-			console.log(self.element.find('option:selected'))
 			if ($(this.element).find('option:selected').length) {
 				this.copy = this.element.find('option:selected').text()
 			}
@@ -39,18 +38,17 @@
 				.hide();
 			this.placeholder.bind('click.selectgroup', function(event) {
 				event.preventDefault();
-				if ($.ui.selectgroup.group.past !== null) {
-					if ($.ui.selectgroup.group.past.element !== self.element) {
-						self.close();
-					}
+				self._toggle();
+			})
+			.bind("keydown.selectmenu", function(event) {
+				switch (event.keyCode) {
+					case $.ui.keyCode.ENTER:
+						event.preventDefault();
+						self._toggle();
+						break;
+					default:
+						break;
 				}
-				if (!self.isOpen) {
-					self.open();
-				} 
-				else {
-					self.close();
-				}
-				$.ui.selectgroup.group.past = self;
 			});	
 			this._bind(document, {
 				click: function(event) {
@@ -118,6 +116,20 @@
 			var coordinates = this.placeholder.offset();
 			coordinates.top += this.placeholder.height();
 			$($.ui.selectgroup.group).css({'top': coordinates.top, 'left': coordinates.left});
+		},
+		_toggle: function() {
+			if ($.ui.selectgroup.group.past !== null) {
+				if ($.ui.selectgroup.group.past.element !== this.element) {
+					this.close();
+				}
+			}
+			if (!this.isOpen) {
+				this.open();
+			} 
+			else {
+				this.close();
+			}
+			$.ui.selectgroup.group.past = this;
 		},
 		_focus: function() {
 			
