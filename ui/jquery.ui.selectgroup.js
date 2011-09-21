@@ -55,7 +55,7 @@
 						break;
 					case $.ui.keyCode.UP:
 						event.preventDefault();
-						
+						self._traverse(-1);
 						break;
 					case $.ui.keyCode.DOWN:
 						event.preventDefault();
@@ -66,11 +66,11 @@
 						break;
 					case $.ui.keyCode.LEFT:
 						event.preventDefault();
-						
+						self._traverse(-1);
 						break;
 					case $.ui.keyCode.RIGHT:
 						event.preventDefault();
-						
+						self._traverse(1);
 						break;
 					case $.ui.keyCode.TAB:
 						if (self.isOpen) {
@@ -115,6 +115,9 @@
 				options = this.options
 				hidden = false;
 			this.group = $('<ul class="' + self.widgetBaseClass + '-list"></ul>');
+			if (options.placeholder) {
+				this.position -= 1;
+			}
 			$.each(this.selectors, function(index) {
 				var list = $('<li><a href="#">'+ this.text +'</a></li>')
 					.bind('click.selectgroup', function(event) {
@@ -123,6 +126,7 @@
 						self.placeholder.find('.ui-selectgroup-copy').text(self.copy);
 						self.element.find('option:selected').removeAttr("selected");
 						$(self.selectors[index].element).attr('selected', 'selected');
+						self.position = index;
 					})
 					.bind('mouseover.selectgroup', function() {
 						$(this).addClass('ui-state-hover');
@@ -143,7 +147,6 @@
 				else {
 					if (options.placeholder && index === 0) {
 						hidden = true;
-						self.position = 1;
 					}
 					if (!hidden) {
 						list.appendTo(self.group);
@@ -174,17 +177,25 @@
 			$.ui.selectgroup.group.past = this;
 		},
 		_traverse: function(value) {
-			
+			var local = this.group.find('li').not('.ui-selectgroup-optgroup'),
+				maximum = local.length
+				instance = null;
 			this.position += value;
-			if (this.position) {
-				
+			if (this.position < 0) {
+				this.position = 0;
 			}
-			
-			this.copy = this.selectors[this.position].text;
-			this.placeholder.find('.ui-selectgroup-copy').text(this.copy);
-			this.element.find('option:selected').removeAttr("selected");
-			$(this.selectors[this.position].element).attr('selected', 'selected');
-			
+			else if (this.position >= maximum) {
+				this.position = maximum;
+			}
+			else {
+				instance = local.get(this.position)
+				this.copy = $(instance).find('a').text();
+				$(instance).addClass('ui-state-hover');							
+				this.placeholder.find('.ui-selectgroup-copy').text(this.copy);
+				this.element.find('option:selected').removeAttr("selected");
+				$(this.selectors[this.position].element).attr('selected', 'selected');
+			}
+			$.ui.selectgroup.group.position = value;
 		},
 		_focus: function() {
 			
