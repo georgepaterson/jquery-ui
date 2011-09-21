@@ -16,6 +16,7 @@
 			placeholder: false
 		},
 		isOpen: false,
+		position: 0,
 		_create: function() {
 			var self = this, 
 				options = this.options;
@@ -46,9 +47,45 @@
 						event.preventDefault();
 						self._toggle();
 						break;
+					case $.ui.keyCode.ESCAPE:
+						event.preventDefault();
+						if (self.isOpen) {
+							self.close();
+						}
+						break;
+					case $.ui.keyCode.UP:
+						event.preventDefault();
+						
+						break;
+					case $.ui.keyCode.DOWN:
+						event.preventDefault();
+						if (!self.isOpen) {
+							self.open();
+						}
+						self._traverse(1);
+						break;
+					case $.ui.keyCode.LEFT:
+						event.preventDefault();
+						
+						break;
+					case $.ui.keyCode.RIGHT:
+						event.preventDefault();
+						
+						break;
+					case $.ui.keyCode.TAB:
+						if (self.isOpen) {
+							self.close();
+						}
+						break;
 					default:
 						break;
 				}
+			})
+			.bind('mouseover.selectgroup', function() {
+				$(this).addClass('ui-state-hover');
+			})
+			.bind('mouseout.selectmenu', function() {
+				$(this).removeClass('ui-state-hover');
 			});	
 			this._bind(document, {
 				click: function(event) {
@@ -81,13 +118,17 @@
 			$.each(this.selectors, function(index) {
 				var list = $('<li><a href="#">'+ this.text +'</a></li>')
 					.bind('click.selectgroup', function(event) {
-						
 						event.preventDefault();
 						self.copy = self.selectors[index].text;
 						self.placeholder.find('.ui-selectgroup-copy').text(self.copy);
 						self.element.find('option:selected').removeAttr("selected");
 						$(self.selectors[index].element).attr('selected', 'selected');
-						
+					})
+					.bind('mouseover.selectgroup', function() {
+						$(this).addClass('ui-state-hover');
+					})
+					.bind('mouseout.selectmenu', function() {
+						$(this).removeClass('ui-state-hover');
 					});
 				if (this.optgroup.length) {
 					var name = self.widgetBaseClass + '-optgroup-' + self.element.find('optgroup').index(this.optgroup);
@@ -102,6 +143,7 @@
 				else {
 					if (options.placeholder && index === 0) {
 						hidden = true;
+						self.position = 1;
 					}
 					if (!hidden) {
 						list.appendTo(self.group);
@@ -130,6 +172,19 @@
 				this.close();
 			}
 			$.ui.selectgroup.group.past = this;
+		},
+		_traverse: function(value) {
+			
+			this.position += value;
+			if (this.position) {
+				
+			}
+			
+			this.copy = this.selectors[this.position].text;
+			this.placeholder.find('.ui-selectgroup-copy').text(this.copy);
+			this.element.find('option:selected').removeAttr("selected");
+			$(this.selectors[this.position].element).attr('selected', 'selected');
+			
 		},
 		_focus: function() {
 			
