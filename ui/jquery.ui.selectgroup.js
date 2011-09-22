@@ -121,9 +121,6 @@
 				options = this.options
 				hidden = false;
 			this.group = $('<ul class="' + self.widgetBaseClass + '-list"></ul>');
-			if (options.placeholder) {
-				this.position -= 1;
-			}
 			$.each(this.selectors, function(index) {
 				var list = $('<li><a href="#">'+ this.text +'</a></li>')
 					.bind('click.selectgroup', function(event) {
@@ -132,7 +129,12 @@
 						self.placeholder.find('.ui-selectgroup-copy').text(self.copy);
 						self.element.find('option:selected').removeAttr("selected");
 						$(self.selectors[index].element).attr('selected', 'selected');
-						self.position = index;
+						if (options.placeholder) {
+							self.position = index - 1;
+						}
+						else {
+							self.position = index;
+						}	
 					})
 					.bind('mouseover.selectgroup', function() {
 						$(this).addClass('ui-state-hover');
@@ -140,9 +142,16 @@
 					.bind('mouseout.selectmenu', function() {
 						$(this).removeClass('ui-state-hover');
 					});
-				if (self.position === index) {
-					list.addClass('ui-state-hover');
-				}	
+				if (options.placeholder) {
+					if ((self.position + 1) === index) {
+						list.addClass('ui-state-hover');
+					}
+				}
+				else {
+					if (self.position === index) {
+						list.addClass('ui-state-hover');
+					}
+				}
 				if (this.optgroup.length) {
 					var name = self.widgetBaseClass + '-optgroup-' + self.element.find('optgroup').index(this.optgroup);
 					if (self.group.find('li.' + name).length ) {
@@ -187,17 +196,17 @@
 		},
 		_traverse: function(value) {
 			var local = this.group.find('li').not('.ui-selectgroup-optgroup'),
-				maximum = local.length
+				maximum = local.length - 1,
 				instance = null;
 			this.position += value;
 			if (this.position < 0) {
 				this.position = 0;
 			}
-			else if (this.position >= maximum) {
+			else if (this.position > maximum) {
 				this.position = maximum;
 			}
 			else {
-				instance = local.get(this.position)
+				instance = local.get(this.position);
 				this.copy = $(instance).find('a').text();
 				local.removeClass('ui-state-hover');
 				$(instance).addClass('ui-state-hover');						
