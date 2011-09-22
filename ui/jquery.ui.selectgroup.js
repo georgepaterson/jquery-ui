@@ -140,6 +140,9 @@
 					.bind('mouseout.selectmenu', function() {
 						$(this).removeClass('ui-state-hover');
 					});
+				if (self.position === index) {
+					list.addClass('ui-state-hover');
+				}	
 				if (this.optgroup.length) {
 					var name = self.widgetBaseClass + '-optgroup-' + self.element.find('optgroup').index(this.optgroup);
 					if (self.group.find('li.' + name).length ) {
