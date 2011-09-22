@@ -66,10 +66,16 @@
 						break;
 					case $.ui.keyCode.LEFT:
 						event.preventDefault();
+						if (!self.isOpen) {
+							self.open();
+						}
 						self._traverse(-1);
 						break;
 					case $.ui.keyCode.RIGHT:
 						event.preventDefault();
+						if (!self.isOpen) {
+							self.open();
+						}
 						self._traverse(1);
 						break;
 					case $.ui.keyCode.TAB:
@@ -190,7 +196,8 @@
 			else {
 				instance = local.get(this.position)
 				this.copy = $(instance).find('a').text();
-				$(instance).addClass('ui-state-hover');							
+				local.removeClass('ui-state-hover');
+				$(instance).addClass('ui-state-hover');						
 				this.placeholder.find('.ui-selectgroup-copy').text(this.copy);
 				this.element.find('option:selected').removeAttr("selected");
 				$(this.selectors[this.position].element).attr('selected', 'selected');
