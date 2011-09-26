@@ -56,16 +56,6 @@
 						}
 						break;
 					case $.ui.keyCode.UP:
-						event.preventDefault();
-						self._traverse(-1);
-						break;
-					case $.ui.keyCode.DOWN:
-						event.preventDefault();
-						if (!self.isOpen) {
-							self.open();
-						}
-						self._traverse(1);
-						break;
 					case $.ui.keyCode.LEFT:
 						event.preventDefault();
 						if (!self.isOpen) {
@@ -73,6 +63,7 @@
 						}
 						self._traverse(-1);
 						break;
+					case $.ui.keyCode.DOWN:
 					case $.ui.keyCode.RIGHT:
 						event.preventDefault();
 						if (!self.isOpen) {
@@ -86,14 +77,13 @@
 						}
 						break;
 					default:
+						event.preventDefault();
+						if (!self.isOpen) {
+							self.open();
+						}
+						self._autocomplete(String.fromCharCode(event.keyCode));
 						break;
 				}
-			})
-			.bind('keypress.selectmenu', function(event) {
-				if (!self.isOpen) {
-					self.open();
-				}
-				self._autocomplete(String.fromCharCode(event.which));
 			})
 			.bind('mouseover.selectgroup', function() {
 				$(this).addClass('ui-state-hover');
@@ -215,14 +205,12 @@
 			}
 			else {
 				instance = local.get(this.position);
-				
 				this.copy = $(instance).find('a').text();
 				local.removeClass('ui-state-hover');
 				$(instance).addClass('ui-state-hover');						
 				this.placeholder.find('.ui-selectgroup-copy').text(this.copy);
 				this.element.find('option:selected').removeAttr("selected");
 				$(this.selectors[this.position].element).attr('selected', 'selected');
-				
 			}
 			$.ui.selectgroup.group.position = value;
 		},
@@ -232,7 +220,7 @@
 				local = this.group.find('li').not('.ui-selectgroup-optgroup'),
 				instance = null;
 			this.search += character;
-			this.search = this.search.toLowerCase(),
+			this.search = this.search.toLowerCase();
 			$.each(this.selectors, function(index) {
 				if (self.search === self.selectors[index].text.substring(0, self.search.length).toLowerCase()) {
 					if (options.placeholder) {
@@ -251,7 +239,7 @@
 				}	
 			});
 			window.clearTimeout(this.timer);
-			this.timer = window.setTimeout(function() {this.search = '';}, (1 * 1000));
+			this.timer = window.setTimeout(function() {self.search = '';}, (1 * 1000));
 		},
 		_focus: function() {
 			
