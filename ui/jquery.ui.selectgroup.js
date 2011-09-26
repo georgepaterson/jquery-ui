@@ -17,6 +17,8 @@
 		},
 		isOpen: false,
 		position: 0,
+		search: '',
+		timer: null,
 		_create: function() {
 			var self = this, 
 				options = this.options;
@@ -86,6 +88,12 @@
 					default:
 						break;
 				}
+			})
+			.bind('keypress.selectmenu', function(event) {
+				if (!self.isOpen) {
+					self.open();
+				}
+				self._autocomplete(String.fromCharCode(event.which));
 			})
 			.bind('mouseover.selectgroup', function() {
 				$(this).addClass('ui-state-hover');
@@ -207,14 +215,43 @@
 			}
 			else {
 				instance = local.get(this.position);
+				
 				this.copy = $(instance).find('a').text();
 				local.removeClass('ui-state-hover');
 				$(instance).addClass('ui-state-hover');						
 				this.placeholder.find('.ui-selectgroup-copy').text(this.copy);
 				this.element.find('option:selected').removeAttr("selected");
 				$(this.selectors[this.position].element).attr('selected', 'selected');
+				
 			}
 			$.ui.selectgroup.group.position = value;
+		},
+		_autocomplete: function(character) {
+			var self = this,
+				options = this.options,
+				local = this.group.find('li').not('.ui-selectgroup-optgroup'),
+				instance = null;
+			this.search += character;
+			this.search = this.search.toLowerCase(),
+			$.each(this.selectors, function(index) {
+				if (self.search === self.selectors[index].text.substring(0, self.search.length).toLowerCase()) {
+					if (options.placeholder) {
+						self.position = index - 1;
+					}
+					else {
+						self.position = index;
+					}
+					instance = local.get(self.position);
+					local.removeClass('ui-state-hover');
+					$(instance).addClass('ui-state-hover');
+					self.placeholder.find('.ui-selectgroup-copy').text(self.selectors[index].text);
+					self.element.find('option:selected').removeAttr("selected");
+					$(self.selectors[index].element).attr('selected', 'selected');
+					return false;	
+				}	
+			});
+			window.clearTimeout(this.timer);
+			this.timer = window.setTimeout(function() {this.search = '';}, (1 * 1000));
 		},
 		_focus: function() {
 			
@@ -239,6 +276,8 @@
 			this.placeholder.addClass('ui-state-active');
 			$.ui.selectgroup.group.show();
 			this.isOpen = true;
+			this.search = '';
+			window.clearTimeout(this.timer);
 		},
 		close: function() {
 			$.ui.selectgroup.group.hide();
