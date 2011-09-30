@@ -16,6 +16,7 @@
 			placeholder: false
 		},
 		isOpen: false,
+		isActive: false,
 		position: 0,
 		search: '',
 		timer: null,
@@ -62,7 +63,7 @@
 					case $.ui.keyCode.UP:
 					case $.ui.keyCode.LEFT:
 						event.preventDefault();
-						if (!self.isOpen) {
+						if (!self.isActive) {
 							self._focus();
 						}
 						self._traverse(-1);
@@ -70,20 +71,22 @@
 					case $.ui.keyCode.DOWN:
 					case $.ui.keyCode.RIGHT:
 						event.preventDefault();
-						if (!self.isOpen) {
+						if (!self.isActive) {
 							self._focus();
 						}
 						self._traverse(1);
 						break;
 					case $.ui.keyCode.TAB:
-						if (self.isOpen) {
+						if (!self.isActive) {
 							self._blur();
+						}
+						if (self.isOpen) {
 							self.close();
 						}
 						break;
 					default:
 						event.preventDefault();
-						if (!self.isOpen) {
+						if (!self.isActive) {
 							self._focus();
 						}
 						self._autocomplete(String.fromCharCode(event.keyCode));
@@ -192,15 +195,29 @@
 					this.close();
 				}
 			}
-			if (!this.isOpen) {
-				this._focus();
-				this.open();
-			} 
-			else {
-				this._blur();
-				this.close();
-			}
 			$.ui.selectgroup.group.past = this;
+			if (!this.isActive) {
+				this._focus();
+				if (!this.isOpen) {
+					this.open();
+				}
+				return;
+			}
+			if (!this.isOpen) {
+				this.open();
+				return;
+			}
+			if (this.isActive) {
+				this._blur();
+				if (this.isOpen) {
+					this.close();
+				}
+				return;
+			}
+			if (this.isOpen) {
+				this.close();
+				return;
+			}
 		},
 		_traverse: function(value) {
 			var local = this.group.find('li').not('.ui-selectgroup-optgroup'),
@@ -278,23 +295,25 @@
 		},
 		_focus: function() {
 			this._index();
-			this.placeholder.addClass('ui-state-active');
-			this.isOpen = true;
 			this.search = '';
 			window.clearTimeout(this.timer);
+			this.isActive = true;
 		},
 		_blur: function() {
+			this.isActive = false;
+		},
+		open: function() {
+			this.placeholder.addClass('ui-state-active');
+			$.ui.selectgroup.group.show();
+			this.isOpen = true;
+		},
+		close: function() {
 			if ($.ui.selectgroup.group.past !== null) {
 				$.ui.selectgroup.group.past.placeholder.removeClass('ui-state-active');
 			}
 			this.placeholder.removeClass('ui-state-active');
-			this.isOpen = false;
-		},
-		open: function() {
-			$.ui.selectgroup.group.show();
-		},
-		close: function() {
 			$.ui.selectgroup.group.hide();
+			this.isOpen = false;
 		},
 		refresh: function() {
 			
