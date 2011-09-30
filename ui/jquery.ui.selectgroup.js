@@ -91,20 +91,20 @@
 						}
 						self._autocomplete(String.fromCharCode(event.keyCode));
 						break;
-				}
-			})
-			.bind('mouseover.selectgroup', function() {
-				$(this).addClass('ui-state-hover');
-			})
-			.bind('mouseout.selectmenu', function() {
-				$(this).removeClass('ui-state-hover');
-			});	
+					}
+				})
+				.bind('mouseover.selectgroup', function() {
+					$(this).addClass('ui-state-hover');
+				})
+				.bind('mouseout.selectmenu', function() {
+					$(this).removeClass('ui-state-hover');
+				});	
 			$('label[for="' + id + '"]')
 				.attr( 'for', this.identifiers[0] )
 				.bind( 'click.selectmenu', function(event) {
 					event.preventDefault();
 					self.placeholder.focus();
-				});
+			});
 			this._bind(document, {
 				click: function(event) {
 					if (self.isOpen && !$(event.target).closest('.ui-selectgroup').length ) {
@@ -114,10 +114,7 @@
 					}
 				}
 			});		
-		},
-		_init: function() {
-
-		},
+		}
 		_index: function() {
 			this.selectors = $.map($('option', this.element), function(value) {
 				return {
@@ -256,13 +253,7 @@
 			});
 			window.clearTimeout(this.timer);
 			this.timer = window.setTimeout(function() {self.search = '';}, (1 * 1000));
-		},
-		_select: function() {
-			
-		},
-		change: function() {
-			
-		},
+		}
 		destroy: function() {
 
 		},
@@ -293,9 +284,6 @@
 			this.placeholder.removeClass('ui-state-active');
 			$.ui.selectgroup.group.hide();
 			this.isOpen = false;
-		},
-		refresh: function() {
-			
 		}
 	})
 	$.ui.selectgroup.group = $('<div class="ui-selectgroup-group ui-widget ui-widget-content ui-corner-bottom"></div>');
