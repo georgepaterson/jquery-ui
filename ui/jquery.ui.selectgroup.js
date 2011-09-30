@@ -13,7 +13,7 @@
 	$.widget('ui.selectgroup', {
 		version: '@VERSION',
 		options: {
-			placeholder: false
+			
 		},
 		isOpen: false,
 		isActive: false,
@@ -143,12 +143,7 @@
 						self.placeholder.find('.ui-selectgroup-copy').text(self.copy);
 						self.element.find('option:selected').removeAttr("selected");
 						$(self.selectors[index].element).attr('selected', 'selected');
-						if (options.placeholder) {
-							self.position = index - 1;
-						}
-						else {
-							self.position = index;
-						}	
+						self.position = index;
 					})
 					.bind('mouseover.selectgroup', function() {
 						$(this).addClass('ui-state-hover');
@@ -171,13 +166,7 @@
 					}
 				}
 				else {
-					if (options.placeholder && index === 0) {
-						hidden = true;
-					}
-					if (!hidden) {
-						list.appendTo(self.group);
-					}
-					hidden = false;
+					list.appendTo(self.group);
 				}	
 			});
 			$($.ui.selectgroup.group).html(this.group);
@@ -223,17 +212,7 @@
 			var local = this.group.find('li').not('.ui-selectgroup-optgroup'),
 				maximum = local.length - 1,
 				instance = null;	
-			if (this.options.placeholder) {
-				if (!this.isInitiated) {
-					this.isInitiated = true;
-				}
-				else {
-					this.position += value;
-				}
-			}
-			else {
-				this.position += value;
-			}
+			this.position += value;
 			if (this.position < 0) {
 				this.position = 0;
 			}
