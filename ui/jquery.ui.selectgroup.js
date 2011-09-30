@@ -20,7 +20,6 @@
 		position: 0,
 		search: '',
 		timer: null,
-		isInitiated: false,
 		_create: function() {
 			var self = this, 
 				options = this.options,
