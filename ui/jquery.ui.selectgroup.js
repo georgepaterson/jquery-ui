@@ -113,7 +113,7 @@
 					}
 				}
 			});		
-		}
+		},
 		_index: function() {
 			this.selectors = $.map($('option', this.element), function(value) {
 				return {
@@ -252,7 +252,7 @@
 			});
 			window.clearTimeout(this.timer);
 			this.timer = window.setTimeout(function() {self.search = '';}, (1 * 1000));
-		}
+		},
 		destroy: function() {
 
 		},
