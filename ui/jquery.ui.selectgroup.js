@@ -133,6 +133,9 @@
 				options = this.options
 				hidden = false;
 			this.group = $('<ul class="' + self.widgetBaseClass + '-list"></ul>');
+			if (this.options.autoWidth) {
+				this.group.width(this.placeholder.width());
+			}
 			$.each(this.selectors, function(index) {
 				var list = $('<li><a href="#">'+ this.text +'</a></li>')
 					.bind('click.selectgroup', function(event) {
