@@ -17,6 +17,7 @@
 		},
 		isOpen: false,
 		isActive: false,
+		isDisabled: false,
 		position: 0,
 		search: '',
 		timer: null,
@@ -46,7 +47,7 @@
 				event.preventDefault();
 				self._toggle();
 			})
-			.bind("keydown.selectmenu", function(event) {
+			.bind('keydown.selectmenu', function(event) {
 				switch (event.keyCode) {
 					case $.ui.keyCode.ENTER:
 						event.preventDefault();
@@ -286,10 +287,80 @@
 
 		},
 		enable: function() {
-
+			var self = this;
+			this.placeholder.removeClass('ui-state-disabled')
+				.bind('click.selectgroup', function(event) {
+					event.preventDefault();
+					self._toggle();
+				})
+				.bind('keydown.selectmenu', function(event) {
+					switch (event.keyCode) {
+						case $.ui.keyCode.ENTER:
+							event.preventDefault();
+							self._toggle();
+							break;
+						case $.ui.keyCode.ESCAPE:
+							event.preventDefault();
+							if (self.isOpen) {
+								self._blur();
+								self.close();
+							}
+							break;
+						case $.ui.keyCode.UP:
+						case $.ui.keyCode.LEFT:
+							event.preventDefault();
+							if (!self.isActive) {
+								self._focus();
+							}
+							self._traverse(-1);
+							break;
+						case $.ui.keyCode.DOWN:
+						case $.ui.keyCode.RIGHT:
+							event.preventDefault();
+							if (!self.isActive) {
+								self._focus();
+							}
+							self._traverse(1);
+							break;
+						case $.ui.keyCode.TAB:
+							if (!self.isActive) {
+								self._blur();
+							}
+							if (self.isOpen) {
+								self.close();
+							}
+							break;
+						default:
+							event.preventDefault();
+							if (!self.isActive) {
+								self._focus();
+							}
+							self._autocomplete(String.fromCharCode(event.keyCode));
+							break;
+					}
+				})
+				.bind('mouseover.selectgroup', function() {
+					$(this).addClass('ui-state-hover');
+				})
+				.bind('mouseout.selectmenu', function() {
+					$(this).removeClass('ui-state-hover');
+				});
 		},
 		disable: function() {
-
+			if (self.isOpen) {
+				self.close();
+			}
+			this.placeholder.addClass('ui-state-disabled')
+				.unbind('click.selectgroup')
+				.unbind('keydown.selectmenu')
+				.unbind('mouseover.selectgroup')
+				.unbind('mouseout.selectmenu')
+				.bind('click.selectgroup', function(event) {
+					event.preventDefault();
+				})	
+				.bind('keydown.selectmenu', function(event) {
+					event.preventDefault();
+				});
 		},
 		_focus: function() {
 			this._index();
