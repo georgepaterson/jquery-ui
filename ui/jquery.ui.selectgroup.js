@@ -13,7 +13,7 @@
 	$.widget('ui.selectgroup', {
 		version: '@VERSION',
 		options: {
-			
+			autoWidth: false
 		},
 		isOpen: false,
 		isActive: false,
@@ -120,8 +120,10 @@
 					element: $(value),
 					text: $(value).text(),
 					optgroup: $(value).parent('optgroup'),
+					optDisabled: $(value).parent('optgroup').attr('disabled'),
 					value: $(value).attr('value'),
-					selected: $(value).attr('selected')
+					selected: $(value).attr('selected'),
+					disabled: $(value).attr('disabled'),
 				};
 			});
 			this._build();
@@ -142,7 +144,9 @@
 						self.position = index;
 					})
 					.bind('mouseover.selectgroup', function() {
-						$(this).addClass('ui-state-hover');
+						if (self.disabled !== 'disabled' && self.optDisabled !== 'disabled') {
+							$(this).addClass('ui-state-hover');
+						}
 					})
 					.bind('mouseout.selectmenu', function() {
 						$(this).removeClass('ui-state-hover');
@@ -151,6 +155,9 @@
 					list.addClass('ui-state-hover');
 					self.position = index;
 				}
+				if (typeof this.disabled !== "undefined" && this.disabled === 'disabled') {
+					list.addClass('ui-state-disabled');
+				}
 				if (this.optgroup.length) {
 					var name = self.widgetBaseClass + '-optgroup-' + self.element.find('optgroup').index(this.optgroup);
 					if (self.group.find('li.' + name).length ) {
@@ -158,7 +165,12 @@
 					}
 					else {
 						var opt = '<li class="' + name + ' ' + self.widgetBaseClass + '-optgroup"><span>'+ this.optgroup.attr('label') +'</span><ul></ul></li>';
-						$(opt).appendTo(self.group).find('ul').append(list);
+						if (typeof this.optDisabled !== "undefined" && this.optDisabled === 'disabled') {
+							$(opt).addClass('ui-state-disabled').appendTo(self.group).find('ul').append(list);
+						}
+						else {
+							$(opt).appendTo(self.group).find('ul').append(list);
+						}
 					}
 				}
 				else {
@@ -204,26 +216,40 @@
 				return;
 			}
 		},
-		_traverse: function(value) {
+		_traverse: function(value, record) {
 			var local = this.group.find('li').not('.ui-selectgroup-optgroup'),
 				maximum = local.length - 1,
+				position = this.position,
 				instance = null;	
-			this.position += value;
-			if (this.position < 0) {
-				this.position = 0;
-			}
-			else if (this.position > maximum) {
-				this.position = maximum;
-			}
-			else {
-				instance = local.get(this.position);
-				this.copy = $(instance).find('a').text();
-				local.removeClass('ui-state-hover');
-				$(instance).addClass('ui-state-hover');						
-				this.placeholder.find('.ui-selectgroup-copy').text(this.copy);
-				this.element.find('option:selected').removeAttr("selected");
-				$(this.selectors[this.position].element).attr('selected', 'selected');
-			}
+			  position = this.position + value;
+				if (position < 0) {
+					position = 0;
+				}
+				if (position > maximum) {
+					position = maximum;
+				}
+				if (position === record) { 
+					return;
+				}
+				if (this.selectors[position].disabled === 'disabled' || this.selectors[position].optDisabled === 'disabled') {
+					if (value > 0) {
+						++value;
+					}
+					else {
+						--value;
+					}
+					this._traverse(value, position);
+				}
+				else {
+					this.position = position;
+					instance = local.get(this.position);
+					this.copy = $(instance).find('a').text();
+					local.removeClass('ui-state-hover');
+					$(instance).addClass('ui-state-hover');						
+					this.placeholder.find('.ui-selectgroup-copy').text(this.copy);
+					this.element.find('option:selected').removeAttr("selected");
+					$(this.selectors[this.position].element).attr('selected', 'selected');
+				}
 			$.ui.selectgroup.group.position = value;
 		},
 		_autocomplete: function(character) {
