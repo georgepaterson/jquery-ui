@@ -22,8 +22,7 @@
 		search: '',
 		timer: null,
 		_create: function() {
-			var self = this, 
-				options = this.options,
+			var options = this.options,
 				id = this.element.attr('id');
 			this.identifiers = ['ui-' + id, 'ui-' + id];
 			if ($.ui.selectgroup.group.initialised === false) {
@@ -37,80 +36,82 @@
 			else {
 				this.copy = this.element.find('option').first().text();
 			}
-			this.placeholder = $('<a href="#" id="' + this.identifiers[1] + '" class="' + self.widgetBaseClass + ' ui-widget ui-state-default ui-corner-all"'
+			this.placeholder = $('<a href="#" id="' + this.identifiers[1] + '" class="' + this.widgetBaseClass + ' ui-widget ui-state-default ui-corner-all"'
 				+ 'role="button" aria-haspopup="true" aria-owns="">'
-				+ '<span class="' + self.widgetBaseClass + '-copy">'+ this.copy +'</span>'
-				+ '<span class="' + self.widgetBaseClass + '-icon ui-icon ui-icon-triangle-1-s"></span></a>');
-			this.element.after(this.placeholder)
-				.hide();
-			this.placeholder.bind('click.selectgroup', function(event) {
-				event.preventDefault();
-				self._toggle();
-			})
-			.bind('keydown.selectmenu', function(event) {
-				switch (event.keyCode) {
-					case $.ui.keyCode.ENTER:
-						event.preventDefault();
-						self._toggle();
-						break;
-					case $.ui.keyCode.ESCAPE:
-						event.preventDefault();
-						if (self.isOpen) {
-							self._blur();
-							self.close();
-						}
-						break;
-					case $.ui.keyCode.UP:
-					case $.ui.keyCode.LEFT:
-						event.preventDefault();
-						if (!self.isActive) {
-							self._focus();
-						}
-						self._traverse(-1);
-						break;
-					case $.ui.keyCode.DOWN:
-					case $.ui.keyCode.RIGHT:
-						event.preventDefault();
-						if (!self.isActive) {
-							self._focus();
-						}
-						self._traverse(1);
-						break;
-					case $.ui.keyCode.TAB:
-						if (!self.isActive) {
-							self._blur();
-						}
-						if (self.isOpen) {
-							self.close();
-						}
-						break;
-					default:
-						event.preventDefault();
-						if (!self.isActive) {
-							self._focus();
-						}
-						self._autocomplete(String.fromCharCode(event.keyCode));
-						break;
-					}
-				})
-				.bind('mouseover.selectgroup', function() {
-					$(this).addClass('ui-state-hover');
-				})
-				.bind('mouseout.selectgroup', function() {
-					$(this).removeClass('ui-state-hover');
-				});	
-			$('label[for="' + id + '"]')
-				.attr( 'for', this.identifiers[0] )
-				.bind( 'click.selectmenu', function(event) {
+				+ '<span class="' + this.widgetBaseClass + '-copy">'+ this.copy +'</span>'
+				+ '<span class="' + this.widgetBaseClass + '-icon ui-icon ui-icon-triangle-1-s"></span></a>');
+			this.element.after(this.placeholder).hide();
+			this._bind(this.placeholder, {
+				'click': function(event) {
 					event.preventDefault();
-					self.placeholder.focus();
+					this._toggle();
+				},
+				'keydown': function(event) {
+					switch (event.keyCode) {
+						case $.ui.keyCode.ENTER:
+							event.preventDefault();
+							this._toggle();
+							break;
+						case $.ui.keyCode.ESCAPE:
+							event.preventDefault();
+							if (this.isOpen) {
+								this._blur();
+								this.close();
+							}
+							break;
+						case $.ui.keyCode.UP:
+						case $.ui.keyCode.LEFT:
+							event.preventDefault();
+							if (!this.isActive) {
+								this._focus();
+							}
+							this._traverse(-1);
+							break;
+						case $.ui.keyCode.DOWN:
+						case $.ui.keyCode.RIGHT:
+							event.preventDefault();
+							if (!this.isActive) {
+								this._focus();
+							}
+							this._traverse(1);
+							break;
+						case $.ui.keyCode.TAB:
+							if (!this.isActive) {
+								this._blur();
+							}
+							if (this.isOpen) {
+								this.close();
+							}
+							break;
+						default:
+							event.preventDefault();
+							if (!this.isActive) {
+								this._focus();
+							}
+							this._autocomplete(String.fromCharCode(event.keyCode));
+							break;
+					}
+				},
+				'mouseover': function(event) {
+					$(this).addClass('ui-state-hover');
+				},
+				'mouseout': function(event) {
+					$(this).removeClass('ui-state-hover');
+				}
+			});
+			$('label[for="' + id + '"]').attr( 'for', this.identifiers[0] );
+			this._bind($('label[for="' + this.identifiers[0] + '"]'), {
+				'click': function(event) {
+					event.preventDefault();
+					this.placeholder.focus();
+				}
 			});
 			this._bind(document, {
-				'mousedown': function(event) {
-					if (self.isOpen && !$(event.target).closest('.ui-selectgroup').length) {
+				'click': function(event) {
+					if (this.isOpen && !$(event.target).closest('.ui-selectgroup').length) {
 						window.setTimeout( function() {
-							self._blur();
-							self.close();
+							this._blur();
+							this.close();
 							$.ui.selectgroup.group.past = null;
 						}, (100));
 					}
@@ -132,55 +133,58 @@
 			this._build();
 		},
 		_build: function() {
-			var self = this, 
+			var that = this, 
 				options = this.options
 				hidden = false;
-			this.group = $('<ul class="' + self.widgetBaseClass + '-list"></ul>');
+			this.group = $('<ul class="' + this.widgetBaseClass + '-list"></ul>');
 			if (this.options.autoWidth) {
 				this.group.width(this.placeholder.width());
 			}
 			$.each(this.selectors, function(index) {
 				var list = $('<li><a href="#">'+ this.text +'</a></li>')
-					.bind('click.selectgroup', function(event) {
+				that._bind(list, {
+					'click': function(event) {
 						event.preventDefault();
-						self.copy = self.selectors[index].text;
-						self.placeholder.find('.ui-selectgroup-copy').text(self.copy);
-						self.element.find('option:selected').removeAttr("selected");
-						$(self.selectors[index].element).attr('selected', 'selected');
-						self.position = index;
-					})
-					.bind('mouseover.selectgroup', function() {
-						if (self.disabled !== 'disabled' && self.optDisabled !== 'disabled') {
-							$(this).addClass('ui-state-hover');
+						that.copy = that.selectors[index].text;
+						that.placeholder.find('.ui-selectgroup-copy').text(that.copy);
+						that.element.find('option:selected').removeAttr("selected");
+						$(that.selectors[index].element).attr('selected', 'selected');
+						that.position = index;
+						that._toggle();
+					},
+					'mouseover': function(event) {
+						if (that.disabled !== 'disabled' && that.optDisabled !== 'disabled') {
+							$(list).addClass('ui-state-hover');
 						}
-					})
-					.bind('mouseout.selectmenu', function() {
-						$(this).removeClass('ui-state-hover');
-					});
+					},
+					'mouseout': function(event) {
+						$(list).removeClass('ui-state-hover');
+					}
+				});
 				if (typeof this.selected !== "undefined" && this.selected === 'selected') {
 					list.addClass('ui-state-hover');
-					self.position = index;
+					that.position = index;
 				}
 				if (typeof this.disabled !== "undefined" && this.disabled === 'disabled') {
 					list.addClass('ui-state-disabled');
 				}
 				if (this.optgroup.length) {
-					var name = self.widgetBaseClass + '-optgroup-' + self.element.find('optgroup').index(this.optgroup);
-					if (self.group.find('li.' + name).length ) {
-						self.group.find('li.' + name + ' ul').append(list);
+					var name = that.widgetBaseClass + '-optgroup-' + that.element.find('optgroup').index(this.optgroup);
+					if (that.group.find('li.' + name).length ) {
+						that.group.find('li.' + name + ' ul').append(list);
 					}
 					else {
-						var opt = '<li class="' + name + ' ' + self.widgetBaseClass + '-optgroup"><span>'+ this.optgroup.attr('label') +'</span><ul></ul></li>';
+						var opt = '<li class="' + name + ' ' + that.widgetBaseClass + '-optgroup"><span>'+ this.optgroup.attr('label') +'</span><ul></ul></li>';
 						if (typeof this.optDisabled !== "undefined" && this.optDisabled === 'disabled') {
-							$(opt).addClass('ui-state-disabled').appendTo(self.group).find('ul').append(list);
+							$(opt).addClass('ui-state-disabled').appendTo(that.group).find('ul').append(list);
 						}
 						else {
-							$(opt).appendTo(self.group).find('ul').append(list);
+							$(opt).appendTo(that.group).find('ul').append(list);
 						}
 					}
 				}
 				else {
-					list.appendTo(self.group);
+					list.appendTo(that.group);
 				}	
 			});
 			$($.ui.selectgroup.group).html(this.group);
@@ -259,36 +263,36 @@
 			$.ui.selectgroup.group.position = value;
 		},
 		_autocomplete: function(character) {
-			var self = this,
+			var that = this,
 				options = this.options,
 				local = this.group.find('li').not('.ui-selectgroup-optgroup'),
 				instance = null;
 			this.search += character;
 			this.search = this.search.toLowerCase();
 			$.each(this.selectors, function(index) {
-				if (self.search === self.selectors[index].text.substring(0, self.search.length).toLowerCase()) {
+				if (that.search === that.selectors[index].text.substring(0, that.search.length).toLowerCase()) {
 					if (options.placeholder) {
-						self.position = index - 1;
+						that.position = index - 1;
 					}
 					else {
-						self.position = index;
+						that.position = index;
 					}
-					instance = local.get(self.position);
+					instance = local.get(that.position);
 					local.removeClass('ui-state-hover');
 					$(instance).addClass('ui-state-hover');
-					self.placeholder.find('.ui-selectgroup-copy').text(self.selectors[index].text);
-					self.element.find('option:selected').removeAttr("selected");
-					$(self.selectors[index].element).attr('selected', 'selected');
+					that.placeholder.find('.ui-selectgroup-copy').text(that.selectors[index].text);
+					that.element.find('option:selected').removeAttr("selected");
+					$(that.selectors[index].element).attr('selected', 'selected');
 					return false;	
 				}	
 			});
 			window.clearTimeout(this.timer);
-			this.timer = window.setTimeout(function() {self.search = '';}, (1000));
+			this.timer = window.setTimeout(function() {that.search = '';}, (1000));
 		},
 		destroy: function() {
 			var id = this.identifiers[0].split('ui-')
-			if (self.isOpen) {
-				self.close();
+			if (this.isOpen) {
+				this.close();
 			}
 			this.placeholder.remove();
 			$(document).unbind('.selectgroup');
@@ -298,77 +302,79 @@
 			this.element.show();
 		},
 		enable: function() {
-			var self = this;
 			this.placeholder.removeClass('ui-state-disabled')
-				.bind('click.selectgroup', function(event) {
+			this._bind(this.placeholder, {
+				'click': function(event) {
 					event.preventDefault();
-					self._toggle();
-				})
-				.bind('keydown.selectmenu', function(event) {
+					this._toggle();
+				},
+				'keydown': function(event) {
 					switch (event.keyCode) {
 						case $.ui.keyCode.ENTER:
 							event.preventDefault();
-							self._toggle();
+							this._toggle();
 							break;
 						case $.ui.keyCode.ESCAPE:
 							event.preventDefault();
-							if (self.isOpen) {
-								self._blur();
-								self.close();
+							if (this.isOpen) {
+								this._blur();
+								this.close();
 							}
 							break;
 						case $.ui.keyCode.UP:
 						case $.ui.keyCode.LEFT:
 							event.preventDefault();
-							if (!self.isActive) {
-								self._focus();
+							if (!this.isActive) {
+								this._focus();
 							}
-							self._traverse(-1);
+							this._traverse(-1);
 							break;
 						case $.ui.keyCode.DOWN:
 						case $.ui.keyCode.RIGHT:
 							event.preventDefault();
-							if (!self.isActive) {
-								self._focus();
+							if (!this.isActive) {
+								this._focus();
 							}
-							self._traverse(1);
+							this._traverse(1);
 							break;
 						case $.ui.keyCode.TAB:
-							if (!self.isActive) {
-								self._blur();
+							if (!this.isActive) {
+								this._blur();
 							}
-							if (self.isOpen) {
-								self.close();
+							if (this.isOpen) {
+								this.close();
 							}
 							break;
 						default:
 							event.preventDefault();
-							if (!self.isActive) {
-								self._focus();
+							if (!this.isActive) {
+								this._focus();
 							}
-							self._autocomplete(String.fromCharCode(event.keyCode));
+							this._autocomplete(String.fromCharCode(event.keyCode));
 							break;
 					}
-				})
-				.bind('mouseover.selectgroup', function() {
+				},
+				'mouseover': function(event) {
 					$(this).addClass('ui-state-hover');
-				})
-				.bind('mouseout.selectmenu', function() {
+				},
+				'mouseout': function(event) {
 					$(this).removeClass('ui-state-hover');
-				});
+				}
+			});
 		},
 		disable: function() {
-			if (self.isOpen) {
-				self.close();
+			if (this.isOpen) {
+				this.close();
 			}
-			this.placeholder.addClass('ui-state-disabled')
-				.unbind('.selectgroup')
-				.bind('click.selectgroup', function(event) {
+			this.placeholder.addClass('ui-state-disabled').unbind('.selectgroup');
+			this._bind(this.placeholder, {
+				'click': function(event) {
 					event.preventDefault();
-				})	
-				.bind('keydown.selectmenu', function(event) {
+				},
+				'keydown': function(event) {
 					event.preventDefault();
-				});
+				}
+			});
 		},
 		_focus: function() {
 			this._index();
