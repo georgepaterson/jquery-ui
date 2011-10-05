@@ -96,7 +96,7 @@
 				.bind('mouseover.selectgroup', function() {
 					$(this).addClass('ui-state-hover');
 				})
-				.bind('mouseout.selectmenu', function() {
+				.bind('mouseout.selectgroup', function() {
 					$(this).removeClass('ui-state-hover');
 				});	
 			$('label[for="' + id + '"]')
@@ -106,14 +106,16 @@
 					self.placeholder.focus();
 			});
 			this._bind(document, {
-				click: function(event) {
-					if (self.isOpen && !$(event.target).closest('.ui-selectgroup').length ) {
-						self._blur();
-						self.close();
-						$.ui.selectgroup.group.past = null;
+				'mousedown': function(event) {
+					if (self.isOpen && !$(event.target).closest('.ui-selectgroup').length) {
+						window.setTimeout( function() {
+							self._blur();
+							self.close();
+							$.ui.selectgroup.group.past = null;
+						}, (100));
 					}
 				}
-			});		
+			});	
 		},
 		_index: function() {
 			this.selectors = $.map($('option', this.element), function(value) {
@@ -281,10 +283,19 @@
 				}	
 			});
 			window.clearTimeout(this.timer);
-			this.timer = window.setTimeout(function() {self.search = '';}, (1 * 1000));
+			this.timer = window.setTimeout(function() {self.search = '';}, (1000));
 		},
 		destroy: function() {
-
+			var id = this.identifiers[0].split('ui-')
+			if (self.isOpen) {
+				self.close();
+			}
+			this.placeholder.remove();
+			$(document).unbind('.selectgroup');
+			$('label[for="' + this.identifiers[0] + '"]')
+				.attr( 'for', id[1] )
+				.unbind( '.selectmenu');
+			this.element.show();
 		},
 		enable: function() {
 			var self = this;
@@ -351,10 +362,7 @@
 				self.close();
 			}
 			this.placeholder.addClass('ui-state-disabled')
-				.unbind('click.selectgroup')
-				.unbind('keydown.selectmenu')
-				.unbind('mouseover.selectgroup')
-				.unbind('mouseout.selectmenu')
+				.unbind('.selectgroup')
 				.bind('click.selectgroup', function(event) {
 					event.preventDefault();
 				})	
