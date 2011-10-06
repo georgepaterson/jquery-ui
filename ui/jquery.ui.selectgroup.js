@@ -13,7 +13,7 @@
 	$.widget('ui.selectgroup', {
 		version: '@VERSION',
 		options: {
-			autoWidth: false
+			autoWidth: true
 		},
 		isOpen: false,
 		isActive: false,
