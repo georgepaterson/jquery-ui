@@ -37,7 +37,7 @@
 				this.copy = this.element.find('option').first().text();
 			}
 			this.placeholder = $('<a href="#" id="' + this.identifiers[1] + '" class="' + this.widgetBaseClass + ' ui-widget ui-state-default ui-corner-all"'
-				+ 'role="button" aria-haspopup="true" aria-owns="">'
+				+ 'role="button" aria-haspopup="true" aria-owns="' + this.widgetBaseClass + '-group">'
 				+ '<span class="' + this.widgetBaseClass + '-copy">'+ this.copy +'</span>'
 				+ '<span class="' + this.widgetBaseClass + '-icon ui-icon ui-icon-triangle-1-s"></span></a>');
 			this.element.after(this.placeholder).hide();
@@ -186,6 +186,7 @@
 					list.appendTo(that.group);
 				}	
 			});
+			$.ui.selectgroup.group.attr('aria-labelledby', this.identifiers[0]);
 			$($.ui.selectgroup.group).html(this.group);
 			this._position();
 		},

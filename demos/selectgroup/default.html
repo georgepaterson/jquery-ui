@@ -31,12 +31,12 @@
 	<style>
 		label {
 			float: left;
-			width: 100px;
+			width: 200px;
 			padding: 5px;
-			margin: 0 10px 10px 0;
+			margin: 0 10px 0 0;
 		}
 		.ui-selectgroup {
-			margin: 0 0 10px;
+			margin: 0 0 30px;
 		}
 	</style>
 </head>
@@ -44,8 +44,7 @@
 
 <div class="demo">
 	<form action="#">
-		<h2>Default drop down.</h2>
-		<label for="test-one">Test one:</label>
+		<label for="test-one">Default drop down:</label>
 		<select id="test-one">
 			<option value="">Please select</option>
 			<option value="one">One</option>
@@ -53,8 +52,7 @@
 			<option value="three">Three</option>
 			<option value="four">Four</option>
 		</select>
-		<h2>Default drop down with selected option.</h2>
-		<label for="test-two">Test two:</label>
+		<label for="test-two">Default drop down with selected option:</label>
 		<select id="test-two">
 			<option value="">Please select</option>
 			<option value="one">One</option>
@@ -62,8 +60,7 @@
 			<option value="three">Three</option>
 			<option value="four">Four</option>
 		</select>
-		<h2>Default drop down with option groups.</h2>
-		<label for="test-three">Test three:</label>
+		<label for="test-three">Default drop down with option groups:</label>
 		<select id="test-three">
 			<option value="">Please select</option>
 			<optgroup label="Option group one">
@@ -78,8 +75,7 @@
 			</optgroup>
 			<option value="seven">Seven</option>
 		</select>
-		<h2>Default drop down with option groups and selected option.</h2>
-		<label for="test-four">Test four:</label>
+		<label for="test-four">Default drop down with option groups and selected option:</label>
 		<select id="test-four">
 			<option value="">Please select</option>
 			<optgroup label="Option group one">
@@ -100,7 +96,9 @@
 
 
 <div class="demo-description">
-
+<p>Default functionality for the selectgroup.</p> 
+<p>The original select element is hidden and a new placeholder element is attached to the DOM after the original select element. The select element's label is renamed to point at the new element.</p>
+<p>Selected option and option groups are initially derived from the original select element.</p>
 
 </div><!-- End demo-description -->
 
