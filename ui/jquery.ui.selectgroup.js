@@ -22,7 +22,7 @@
 		search: '',
 		timer: null,
 		_create: function() {
-			var options = this.options,
+			var that = this,
 				id = this.element.attr('id');
 			this.identifiers = ['ui-' + id, 'ui-' + id];
 			if ($.ui.selectgroup.group.initialised === false) {
@@ -110,8 +110,8 @@
 				'click': function(event) {
 					if (this.isOpen && !$(event.target).closest('.ui-selectgroup').length) {
 						window.setTimeout( function() {
-							this._blur();
-							this.close();
+							that._blur();
+							that.close();
 							$.ui.selectgroup.group.past = null;
 						}, (100));
 					}
@@ -134,7 +134,6 @@
 		},
 		_build: function() {
 			var that = this, 
-				options = this.options
 				hidden = false;
 			this.group = $('<ul class="' + this.widgetBaseClass + '-list"></ul>');
 			if (this.options.autoWidth) {

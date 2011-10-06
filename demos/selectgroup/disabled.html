@@ -14,7 +14,6 @@
 	$(function() {
 		$('select').selectgroup();
 		
-		
 		// add themeswitcher
 		$(function(){ 
 			var ts = $('<div class="ui-button ui-widget ui-state-default ui-corner-all" style="padding: 5px; position: absolute; top: 20px; right: 10px;">Click here to add Themeswitcher!</div>')
@@ -44,25 +43,25 @@
 
 <div class="demo">
 	<form action="#">
-		<h2>Default drop down.</h2>
+		<h2>Default drop down with option disabled.</h2>
 		<label for="test-one">Test one:</label>
 		<select id="test-one">
 			<option value="">Please select</option>
 			<option value="one">One</option>
-			<option value="two">Two</option>
+			<option disabled="disabled" value="two">Two</option>
 			<option value="three">Three</option>
 			<option value="four">Four</option>
 		</select>
-		<h2>Default drop down with selected option.</h2>
+		<h2>Default drop down with selected option and disabled option.</h2>
 		<label for="test-two">Test two:</label>
 		<select id="test-two">
 			<option value="">Please select</option>
 			<option value="one">One</option>
 			<option selected="selected" value="two">Two</option>
-			<option value="three">Three</option>
+			<option disabled="disabled"  value="three">Three</option>
 			<option value="four">Four</option>
 		</select>
-		<h2>Default drop down with option groups.</h2>
+		<h2>Default drop down with option groups and disabled option group.</h2>
 		<label for="test-three">Test three:</label>
 		<select id="test-three">
 			<option value="">Please select</option>
@@ -71,14 +70,14 @@
 				<option value="two">Two</option>
 				<option value="three">Three</option>
 			</optgroup>
-			<optgroup label="Option group two">
+			<optgroup disabled="disabled" label="Option group two">
 				<option value="four">Four</option>
 				<option value="five">Five</option>
 				<option value="six">Six</option>
 			</optgroup>
 			<option value="seven">Seven</option>
 		</select>
-		<h2>Default drop down with option groups and selected option.</h2>
+		<h2>Default drop down with option groups, disabled option group, selected option and disabled option.</h2>
 		<label for="test-four">Test four:</label>
 		<select id="test-four">
 			<option value="">Please select</option>
@@ -87,12 +86,12 @@
 				<option value="two">Two</option>
 				<option selected="selected" value="three">Three</option>
 			</optgroup>
-			<optgroup label="Option group two">
+			<optgroup disabled="disabled" label="Option group two">
 				<option value="four">Four</option>
 				<option value="five">Five</option>
 				<option value="six">Six</option>
 			</optgroup>
-			<option value="seven">Seven</option>
+			<option disabled="disabled" value="seven">Seven</option>
 		</select>
 	</form>
 </div><!-- End demo -->
