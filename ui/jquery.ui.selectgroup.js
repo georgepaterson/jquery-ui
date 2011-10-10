@@ -18,6 +18,7 @@
 		isOpen: false,
 		isActive: false,
 		isDisabled: false,
+		isHovering: false,
 		position: 0,
 		search: '',
 		timer: null,
@@ -106,9 +107,17 @@
 					this.placeholder.focus();
 				}
 			});
+			this._bind(this.placeholder, {
+				'mouseenter': function() {
+					this.isHovering = true;
+				},
+				'mouseleave': function() {
+					this.isHovering = false;
+				}
+			});
 			this._bind(document, {
 				'click': function(event) {
-					if (this.isOpen && !$(event.target).closest('.ui-selectgroup').length) {
+					if (this.isOpen && !this.isHovering) {
 						window.setTimeout( function() {
 							that._blur();
 							that.close();
@@ -188,6 +197,14 @@
 			});
 			$.ui.selectgroup.group.attr('aria-labelledby', this.identifiers[0]);
 			$($.ui.selectgroup.group).html(this.group);
+			this._bind(this.group, {
+				'mouseenter': function() {
+					this.isHovering = true;
+				},
+				'mouseleave': function() {
+					this.isHovering = false;
+				}
+			});
 			this._position();
 		},
 		_position: function() {
@@ -376,14 +393,19 @@
 				}
 			});
 		},
-		_focus: function() {
+		focus: function() {
 			this._index();
 			this.search = '';
 			window.clearTimeout(this.timer);
 			this.isActive = true;
 		},
-		_blur: function() {
+		blur: function() {
 			this.isActive = false;
+		},
+		change: function() {
+			this._index();
+			this.search = '';
+			window.clearTimeout(this.timer);
 		},
 		open: function() {
 			this.placeholder.addClass('ui-state-active');
