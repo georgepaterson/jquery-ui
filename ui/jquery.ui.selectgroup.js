@@ -56,7 +56,7 @@
 						case $.ui.keyCode.ESCAPE:
 							event.preventDefault();
 							if (this.isOpen) {
-								this._blur();
+								this.blur();
 								this.close();
 							}
 							break;
@@ -64,7 +64,7 @@
 						case $.ui.keyCode.LEFT:
 							event.preventDefault();
 							if (!this.isActive) {
-								this._focus();
+								this.focus();
 							}
 							this._traverse(-1);
 							break;
@@ -72,13 +72,13 @@
 						case $.ui.keyCode.RIGHT:
 							event.preventDefault();
 							if (!this.isActive) {
-								this._focus();
+								this.focus();
 							}
 							this._traverse(1);
 							break;
 						case $.ui.keyCode.TAB:
 							if (!this.isActive) {
-								this._blur();
+								this.blur();
 							}
 							if (this.isOpen) {
 								this.close();
@@ -87,7 +87,7 @@
 						default:
 							event.preventDefault();
 							if (!this.isActive) {
-								this._focus();
+								this.focus();
 							}
 							this._autocomplete(String.fromCharCode(event.keyCode));
 							break;
@@ -119,7 +119,7 @@
 				'click': function(event) {
 					if (this.isOpen && !this.isHovering) {
 						window.setTimeout( function() {
-							that._blur();
+							that.blur();
 							that.close();
 							$.ui.selectgroup.group.past = null;
 						}, (100));
@@ -215,13 +215,13 @@
 		_toggle: function() {
 			if ($.ui.selectgroup.group.past !== null) {
 				if ($.ui.selectgroup.group.past.element !== this.element) {
-					this._focus();
+					this.focus();
 					this.close();
 				}
 			}
 			$.ui.selectgroup.group.past = this;
 			if (!this.isActive) {
-				this._focus();
+				this.focus();
 				if (!this.isOpen) {
 					this.open();
 				}
@@ -232,7 +232,7 @@
 				return;
 			}
 			if (this.isActive) {
-				this._blur();
+				this.blur();
 				if (this.isOpen) {
 					this.close();
 				}
@@ -334,7 +334,7 @@
 						case $.ui.keyCode.ESCAPE:
 							event.preventDefault();
 							if (this.isOpen) {
-								this._blur();
+								this.blur();
 								this.close();
 							}
 							break;
@@ -342,7 +342,7 @@
 						case $.ui.keyCode.LEFT:
 							event.preventDefault();
 							if (!this.isActive) {
-								this._focus();
+								this.focus();
 							}
 							this._traverse(-1);
 							break;
@@ -350,13 +350,13 @@
 						case $.ui.keyCode.RIGHT:
 							event.preventDefault();
 							if (!this.isActive) {
-								this._focus();
+								this.focus();
 							}
 							this._traverse(1);
 							break;
 						case $.ui.keyCode.TAB:
 							if (!this.isActive) {
-								this._blur();
+								this.blur();
 							}
 							if (this.isOpen) {
 								this.close();
@@ -365,7 +365,7 @@
 						default:
 							event.preventDefault();
 							if (!this.isActive) {
-								this._focus();
+								this.focus();
 							}
 							this._autocomplete(String.fromCharCode(event.keyCode));
 							break;
