@@ -50,14 +50,6 @@
 					this.placeholder.focus();
 				}
 			});
-			this._bind(this.placeholder, {
-				'mouseenter': function() {
-					this.isHovering = true;
-				},
-				'mouseleave': function() {
-					this.isHovering = false;
-				}
-			});
 			this._bind(document, {
 				'click': function(event) {
 					if (this.isOpen && !this.isHovering) {
@@ -128,6 +120,14 @@
 					},
 					'mouseout': function(event) {
 						$(this).removeClass('ui-state-hover');
+					}
+				});
+				this._bind(this.placeholder, {
+					'mouseenter': function() {
+						this.isHovering = true;
+					},
+					'mouseleave': function() {
+						this.isHovering = false;
 					}
 				});
 			}
@@ -361,6 +361,7 @@
 		open: function() {
 			this.placeholder.addClass('ui-state-active');
 			$.ui.selectgroup.group.show();
+			$.ui.selectgroup.group.attr('aria-hidden', 'false');
 			this.isOpen = true;
 		},
 		close: function() {
@@ -369,10 +370,11 @@
 			}
 			this.placeholder.removeClass('ui-state-active');
 			$.ui.selectgroup.group.hide();
+			$.ui.selectgroup.group.attr('aria-hidden', 'true');
 			this.isOpen = false;
 		}
 	})
-	$.ui.selectgroup.group = $('<div class="ui-selectgroup-group ui-widget ui-widget-content ui-corner-bottom"></div>');
+	$.ui.selectgroup.group = $('<div class="ui-selectgroup-group ui-widget ui-widget-content ui-corner-bottom" aria-hidden="true" role="listbox"></div>');
 	$.ui.selectgroup.group.initialised = false;
 	$.ui.selectgroup.group.past = null;
 })(jQuery);
