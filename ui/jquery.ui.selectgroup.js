@@ -304,19 +304,14 @@
 			this.search = this.search.toLowerCase();
 			$.each(this.selectors, function(index) {
 				if (that.search === that.selectors[index].text.substring(0, that.search.length).toLowerCase()) {
-					if (options.placeholder) {
-						that.position = index - 1;
-					}
-					else {
-						that.position = index;
-					}
+					that.position = index;
 					instance = local.get(that.position);
 					local.removeClass('ui-state-hover');
 					$(instance).addClass('ui-state-hover');
 					that.placeholder.find('.ui-selectgroup-copy').text(that.selectors[index].text);
 					that.element.find('option:selected').removeAttr("selected");
 					$(that.selectors[index].element).attr('selected', 'selected');
-					return false;	
+					return;	
 				}	
 			});
 			window.clearTimeout(this.timer);
