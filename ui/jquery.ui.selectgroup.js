@@ -356,16 +356,11 @@
 				});
 				this.search[0] = this.search[1][0];
 			}
-
 			if (that.search[4] === that.search[3]) {
-				console.log('restart')
 				that.search[3] = that.search[2];
 				focusOption(that.search[3]);
 			}
-			console.log('that.search[2]: ' + that.search[2] + ' that.search[3]: ' + that.search[3] + ' that.search[4]: ' + that.search[4])
-			
 			this.search[4] = this.search[3];
-			
 			this.timer = window.setTimeout(function() {that.search[1] = '';}, (1000));
 		},
 		destroy: function() {
