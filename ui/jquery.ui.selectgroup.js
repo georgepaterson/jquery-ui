@@ -395,6 +395,15 @@
 		change: function() {
 			this._index();
 		},
+		refresh: function() {
+			if ($(this.element).find('option:selected').length) {
+				this.copy = this.element.find('option:selected').text();
+			}
+			else {
+				this.copy = this.element.find('option').first().text();
+			}
+			this.placeholder.find('.ui-selectgroup-copy').text(this.copy);
+		},
 		open: function() {
 			this.placeholder.addClass('ui-state-active');
 			$.ui.selectgroup.group.show();
