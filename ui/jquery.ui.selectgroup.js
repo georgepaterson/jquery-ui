@@ -20,7 +20,7 @@
 		isDisabled: false,
 		isHovering: false,
 		position: 0,
-		search: '',
+		search: ['', '', 1, 1, 0],
 		timer: null,
 		_create: function() {
 			var that = this,
@@ -111,7 +111,7 @@
 								if (!this.isActive) {
 									this.focus();
 								}
-								this._autocomplete(String.fromCharCode(event.keyCode));
+								this._typeahead(String.fromCharCode(event.keyCode).toLowerCase());
 								break;
 						}
 					},
@@ -290,32 +290,83 @@
 					local.removeClass('ui-state-hover');
 					$(instance).addClass('ui-state-hover');						
 					this.placeholder.find('.ui-selectgroup-copy').text(this.copy);
-					this.element.find('option:selected').removeAttr("selected");
+					this.element.find('option:selected').removeAttr('selected');
 					$(this.selectors[this.position].element).attr('selected', 'selected');
 				}
 			$.ui.selectgroup.group.position = value;
 		},
-		_autocomplete: function(character) {
+		_typeahead: function(character) {
 			var that = this,
 				options = this.options,
 				local = this.group.find('li').not('.ui-selectgroup-optgroup'),
-				instance = null;
-			this.search += character;
-			this.search = this.search.toLowerCase();
-			$.each(this.selectors, function(index) {
-				if (that.search === that.selectors[index].text.substring(0, that.search.length).toLowerCase()) {
-					that.position = index;
-					instance = local.get(that.position);
-					local.removeClass('ui-state-hover');
-					$(instance).addClass('ui-state-hover');
-					that.placeholder.find('.ui-selectgroup-copy').text(that.selectors[index].text);
-					that.element.find('option:selected').removeAttr("selected");
-					$(that.selectors[index].element).attr('selected', 'selected');
-					return;	
-				}	
-			});
+				instance = null,
+				found = false;
+			character = character.toLowerCase();
+			this.search[1] += character;
 			window.clearTimeout(this.timer);
-			this.timer = window.setTimeout(function() {that.search = '';}, (1000));
+			function focusOption(index) {
+				that.position = index;
+				instance = local.get(that.position);
+				local.removeClass('ui-state-hover');
+				$(instance).addClass('ui-state-hover');
+				that.placeholder.find('.ui-selectgroup-copy').text(that.selectors[index].text);
+				that.element.find('option:selected').removeAttr('selected');
+				$(that.selectors[index].element).attr('selected', 'selected');
+				found = true;
+				that.search[3] = index;
+			};
+			if (this.search[0] === this.search[1][0]) {
+				if (this.search[1].length < 2) {
+					$.each(this.selectors, function(index) {
+						if (!found) {
+							if (that.selectors[index].text.toLowerCase().indexOf(that.search[1][0]) === 0) {
+								if (that.search[0] == that.search[1][0]) {
+									if (that.search[3] < index) {
+										focusOption(index);
+									}
+								}
+							}
+						}
+					});				
+					this.search[0] = this.search[1][0];
+				}
+				else {
+					$.each(this.selectors, function(index) {
+						if (!found) {
+							if (that.selectors[index].text.toLowerCase().indexOf(that.search[1]) === 0) {
+								if (that.search[0][0] == that.search[1][0]) {
+									if (that.search[3] < index) {
+										focusOption(index);
+									}
+								}
+							}
+						}
+					});
+					this.search[0] = this.search[1][0];
+				}
+			}
+			else {
+				$.each(this.selectors, function(index) {
+					if (!found) {
+						if (that.search[1] === that.selectors[index].text.substring(0, that.search[1].length).toLowerCase()) {
+							that.search[2] = index;
+							focusOption(index);
+						}
+					}
+				});
+				this.search[0] = this.search[1][0];
+			}
+
+			if (that.search[4] === that.search[3]) {
+				console.log('restart')
+				that.search[3] = that.search[2];
+				focusOption(that.search[3]);
+			}
+			console.log('that.search[2]: ' + that.search[2] + ' that.search[3]: ' + that.search[3] + ' that.search[4]: ' + that.search[4])
+			
+			this.search[4] = this.search[3];
+			
+			this.timer = window.setTimeout(function() {that.search[1] = '';}, (1000));
 		},
 		destroy: function() {
 			var id = this.identifiers[0].split('ui-')
@@ -341,8 +392,6 @@
 		},
 		focus: function() {
 			this._index();
-			this.search = '';
-			window.clearTimeout(this.timer);
 			this.isActive = true;
 		},
 		blur: function() {
@@ -350,8 +399,6 @@
 		},
 		change: function() {
 			this._index();
-			this.search = '';
-			window.clearTimeout(this.timer);
 		},
 		open: function() {
 			this.placeholder.addClass('ui-state-active');
