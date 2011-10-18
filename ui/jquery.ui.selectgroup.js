@@ -375,15 +375,38 @@
 				.unbind( '.selectmenu');
 			this.element.show();
 		},
-		enable: function() {
-			this.placeholder.removeClass('ui-state-disabled')
-			this._placeholderEvents(true);
-		},
-		disable: function() {
+		enable: function(index, type) {
 			if (this.isOpen) {
 				this.close();
 			}
-			this._placeholderEvents(false);
+			if (typeof (index) == 'undefined') {
+				this.placeholder.removeClass('ui-state-disabled')
+				this._placeholderEvents(true);
+			}
+			else {
+				if ( type == 'optgroup' ) {
+					this.element.find('option').eq(index).removeAttr('disabled');
+				} 
+				else {
+					this.element.find('optgroup').eq(index).removeAttr('disabled');
+				}
+			}
+		},
+		disable: function(index, type) {
+			if (this.isOpen) {
+				this.close();
+			}
+			if (typeof (index) == 'undefined') {
+				this._placeholderEvents(false);
+			}
+			else {
+				if ( type == 'optgroup' ) {
+					this.element.find('option').eq(index).attr('disabled', 'disabled');
+				} 
+				else {
+					this.element.find('optgroup').eq(index).attr('disabled', 'disabled');
+				}
+			}
 		},
 		focus: function() {
 			this._index();
