@@ -114,6 +114,14 @@
 
 <div class="demo-description">
 
+	<p>The user may chose to navigate the selectgroup using alpha-numeric keys available on the keypad.</p>
+	<p>When a character is selected the selectgroup will navigate to the first instance of the first character in the group.</p>
+	<p>There is a 1 second timeout set that will clear the character selection.</p>
+	<p>A second character selected before the timeout will be appended to the original character and a new search will be made. This can be <em>n</em> characters before the timeout.</p>
+	<p>If after the timeout the same character is selected again this will incrementally navigate down the group of available first characters.</p>
+	<p>If the end of the available first characters is reached the selection will return to the initial first character.</p>
+	<p>A new first character and additional characters can be chosen at any time.</p>
+	<p>This should match the functionality available in the original select element.</p>
 
 </div><!-- End demo-description -->
 
