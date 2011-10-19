@@ -14,6 +14,33 @@
 	$(function() {
 		$('select').selectgroup();
 		
+		$('#select-disable').bind('click', function (event) {
+			event.preventDefault();
+			$('#test-one').selectgroup('disable');
+		});
+		$('#select-enable').bind('click', function (event) {
+			event.preventDefault();
+			$('#test-one').selectgroup('enable');
+		});
+		
+		$('#option-disable').bind('click', function (event) {
+			event.preventDefault();
+			$('#test-two').selectgroup('disable', 1);
+		});
+		$('#option-enable').bind('click', function (event) {
+			event.preventDefault();
+			$('#test-two').selectgroup('enable', 1);
+		});
+		
+		$('#option-group-disable').bind('click', function (event) {
+			event.preventDefault();
+			$('#test-three').selectgroup('disable', 1, 'optgroup');
+		});
+		$('#option-group-enable').bind('click', function (event) {
+			event.preventDefault();
+			$('#test-three').selectgroup('enable', 1, 'optgroup');
+		});
+		
 		// add themeswitcher
 		$(function(){ 
 			var ts = $('<div class="ui-button ui-widget ui-state-default ui-corner-all" style="padding: 5px; position: absolute; top: 20px; right: 10px;">Click here to add Themeswitcher!</div>')
@@ -35,7 +62,11 @@
 			margin: 0 10px 0 0;
 		}
 		.ui-selectgroup {
-			margin: 0 0 30px;
+			margin: 0 0 10px;
+		}
+		.demo p {
+			padding: 5px;
+			margin: 0 0 20px;
 		}
 	</style>
 </head>
@@ -43,23 +74,25 @@
 
 <div class="demo">
 	<form action="#">
-		<label for="test-one">Default drop down with option disabled:</label>
-		<select id="test-one">
+		<label for="test-one">Disable select:</label>
+		<select disabled="disabled" id="test-one">
 			<option value="">Please select</option>
 			<option value="one">One</option>
-			<option disabled="disabled" value="two">Two</option>
+			<option value="two">Two</option>
 			<option value="three">Three</option>
 			<option value="four">Four</option>
 		</select>
-		<label for="test-two">Default drop down with selected option and disabled option:</label>
+		<p><a id="select-disable" href="#">Disable</a> or <a id="select-enable" href="#">enable</a> the select.</p>
+		<label for="test-two">Disable an indexed option:</label>
 		<select id="test-two">
 			<option value="">Please select</option>
 			<option value="one">One</option>
-			<option selected="selected" value="two">Two</option>
-			<option disabled="disabled"  value="three">Three</option>
+			<option value="two">Two</option>
+			<option value="three">Three</option>
 			<option value="four">Four</option>
 		</select>
-		<label for="test-three">Default drop down with option groups and disabled option group:</label>
+		<p><a id="option-disable" href="#">Disable</a> or <a id="option-enable" href="#">enable</a> the select option.</p>
+		<label for="test-three">Disabled an indexed option group:</label>
 		<select id="test-three">
 			<option value="">Please select</option>
 			<optgroup label="Option group one">
@@ -67,35 +100,22 @@
 				<option value="two">Two</option>
 				<option value="three">Three</option>
 			</optgroup>
-			<optgroup disabled="disabled" label="Option group two">
+			<optgroup label="Option group two">
 				<option value="four">Four</option>
 				<option value="five">Five</option>
 				<option value="six">Six</option>
 			</optgroup>
 			<option value="seven">Seven</option>
 		</select>
-		<label for="test-four">Default drop down with option groups, disabled option group, selected option and disabled option:</label>
-		<select id="test-four">
-			<option value="">Please select</option>
-			<optgroup label="Option group one">
-				<option value="one">One</option>
-				<option value="two">Two</option>
-				<option selected="selected" value="three">Three</option>
-			</optgroup>
-			<optgroup disabled="disabled" label="Option group two">
-				<option value="four">Four</option>
-				<option value="five">Five</option>
-				<option value="six">Six</option>
-			</optgroup>
-			<option disabled="disabled" value="seven">Seven</option>
-		</select>
+		<p><a id="option-group-disable" href="#">Disable</a> or <a id="option-group-enable" href="#">enable</a> the select option group.</p>
 	</form>
 </div><!-- End demo -->
 
 
 
 <div class="demo-description">
-<p>When the widget is initialised it will test for the disabled attribute on options and option groups and apply the same attribute to the new placeholder element.</p> 
+	
+<p>The selectgroup an option group of the selectgroup or an option of the selectgroup may be disabled or enabled using the widget's methods.</p> 
 
 </div><!-- End demo-description -->
 

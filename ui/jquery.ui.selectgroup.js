@@ -380,15 +380,15 @@
 				this.close();
 			}
 			if (typeof (index) == 'undefined') {
-				this.placeholder.removeClass('ui-state-disabled')
+				this.placeholder.removeClass('ui-state-disabled');
 				this._placeholderEvents(true);
 			}
 			else {
 				if ( type == 'optgroup' ) {
-					this.element.find('option').eq(index).removeAttr('disabled');
+					this.element.find('optgroup').eq(index).removeAttr('disabled');
 				} 
 				else {
-					this.element.find('optgroup').eq(index).removeAttr('disabled');
+					this.element.find('option').eq(index).removeAttr('disabled');
 				}
 			}
 		},
@@ -397,14 +397,15 @@
 				this.close();
 			}
 			if (typeof (index) == 'undefined') {
+				this.placeholder.addClass('ui-state-disabled');
 				this._placeholderEvents(false);
 			}
 			else {
 				if ( type == 'optgroup' ) {
-					this.element.find('option').eq(index).attr('disabled', 'disabled');
+					this.element.find('optgroup').eq(index).attr('disabled', 'disabled');
 				} 
 				else {
-					this.element.find('optgroup').eq(index).attr('disabled', 'disabled');
+					this.element.find('option').eq(index).attr('disabled', 'disabled');
 				}
 			}
 		},
