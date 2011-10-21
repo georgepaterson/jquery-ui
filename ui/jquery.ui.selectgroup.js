@@ -73,7 +73,7 @@
 						switch (event.keyCode) {
 							case $.ui.keyCode.ENTER:
 								event.preventDefault();
-								this._toggle();
+								this.submit();
 								break;
 							case $.ui.keyCode.ESCAPE:
 								event.preventDefault();
@@ -408,6 +408,9 @@
 					this.element.find('option').eq(index).attr('disabled', 'disabled');
 				}
 			}
+		},
+		submit: function() {
+			this.element.closest('form').trigger('submit');
 		},
 		focus: function() {
 			this._index();
