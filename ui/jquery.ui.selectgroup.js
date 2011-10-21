@@ -160,12 +160,12 @@
 		_build: function() {
 			var that = this, 
 				hidden = false;
-			this.group = $('<ul class="' + this.widgetBaseClass + '-list"></ul>');
+			this.group = $('<ul class="' + this.widgetBaseClass + '-list" role="presentation"></ul>');
 			if (this.options.autoWidth) {
 				this.group.width(this.placeholder.width());
 			}
 			$.each(this.selectors, function(index) {
-				var list = $('<li><a href="#">'+ this.text +'</a></li>')
+				var list = $('<li role="presentation"><a role="option" href="#">'+ this.text +'</a></li>')
 				that._bind(list, {
 					'click': function(event) {
 						event.preventDefault();
