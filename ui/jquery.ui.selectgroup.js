@@ -18,7 +18,6 @@
 		isOpen: false,
 		isActive: false,
 		isDisabled: false,
-		isHovering: false,
 		position: 0,
 		search: ['', '', 1, 1, 0],
 		timer: null,
@@ -52,7 +51,7 @@
 			});
 			this._bind(document, {
 				'click': function(event) {
-					if (this.isOpen && !this.isHovering) {
+					if (this.isOpen && !($(event.target).closest('.ui-selectgroup').length || $(event.target).closest('.ui-selectgroup-group').length)) {
 						window.setTimeout( function() {
 							that.blur();
 							that.close();
@@ -120,14 +119,6 @@
 					},
 					'mouseout': function(event) {
 						$(this).removeClass('ui-state-hover');
-					}
-				});
-				this._bind(this.placeholder, {
-					'mouseenter': function() {
-						this.isHovering = true;
-					},
-					'mouseleave': function() {
-						this.isHovering = false;
 					}
 				});
 			}
@@ -213,14 +204,6 @@
 			});
 			$.ui.selectgroup.group.attr('aria-labelledby', this.identifiers[0]);
 			$($.ui.selectgroup.group).html(this.group);
-			this._bind(this.group, {
-				'mouseenter': function() {
-					this.isHovering = true;
-				},
-				'mouseleave': function() {
-					this.isHovering = false;
-				}
-			});
 			this._position();
 		},
 		_position: function() {
