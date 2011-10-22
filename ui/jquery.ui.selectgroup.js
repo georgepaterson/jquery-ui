@@ -151,7 +151,7 @@
 		_build: function() {
 			var that = this, 
 				hidden = false;
-			this.group = $('<ul class="' + this.widgetBaseClass + '-list" role="presentation"></ul>');
+			this.group = $('<ul class="' + this.widgetBaseClass + '-list" role="listbox" aria-hidden="true"></ul>');
 			if (this.options.autoWidth) {
 				this.group.width(this.placeholder.width());
 			}
@@ -202,7 +202,7 @@
 					list.appendTo(that.group);
 				}	
 			});
-			$.ui.selectgroup.group.attr('aria-labelledby', this.identifiers[0]);
+			this.group.attr('aria-labelledby', this.identifiers[0]);
 			$($.ui.selectgroup.group).html(this.group);
 			this._position();
 		},
@@ -417,7 +417,7 @@
 		open: function() {
 			this.placeholder.addClass('ui-state-active');
 			$.ui.selectgroup.group.show();
-			$.ui.selectgroup.group.attr('aria-hidden', 'false');
+			this.group.attr('aria-hidden', 'false');
 			this.isOpen = true;
 		},
 		close: function() {
@@ -426,11 +426,11 @@
 			}
 			this.placeholder.removeClass('ui-state-active');
 			$.ui.selectgroup.group.hide();
-			$.ui.selectgroup.group.attr('aria-hidden', 'true');
+			this.group.attr('aria-hidden', 'true');
 			this.isOpen = false;
 		}
 	})
-	$.ui.selectgroup.group = $('<div class="ui-selectgroup-group ui-widget ui-widget-content ui-corner-bottom" aria-hidden="true" role="listbox"></div>');
+	$.ui.selectgroup.group = $('<div class="ui-selectgroup-group ui-widget ui-widget-content ui-corner-bottom"></div>');
 	$.ui.selectgroup.group.initialised = false;
 	$.ui.selectgroup.group.past = null;
 })(jQuery);
