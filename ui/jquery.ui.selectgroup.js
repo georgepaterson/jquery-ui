@@ -146,17 +146,23 @@
 					disabled: $(value).attr('disabled'),
 				};
 			});
-			this._build();
 		},
-		_build: function() {
+		_renderGroup: function() {
 			var that = this, 
 				hidden = false;
 			this.group = $('<ul class="' + this.widgetBaseClass + '-list" role="listbox" aria-hidden="true"></ul>');
 			if (this.options.autoWidth) {
 				this.group.width(this.placeholder.width());
 			}
+			this._renderOption();
+			this.group.attr('aria-labelledby', this.identifiers[0]);
+			$($.ui.selectgroup.group).html(this.group);
+			this._position();
+		},
+		_renderOption: function() {
+			var that = this;
 			$.each(this.selectors, function(index) {
-				var list = $('<li role="presentation"><a role="option" href="#">'+ this.text +'</a></li>')
+				var list = $('<li role="presentation"><a role="option" href="#">'+ this.text +'</a></li>');
 				that._bind(list, {
 					'click': function(event) {
 						event.preventDefault();
@@ -200,11 +206,8 @@
 				}
 				else {
 					list.appendTo(that.group);
-				}	
-			});
-			this.group.attr('aria-labelledby', this.identifiers[0]);
-			$($.ui.selectgroup.group).html(this.group);
-			this._position();
+				}
+			});	
 		},
 		_position: function() {
 			var coordinates = this.placeholder.offset();
@@ -397,6 +400,7 @@
 		},
 		focus: function() {
 			this._index();
+			this._renderGroup();
 			this.isActive = true;
 		},
 		blur: function() {
@@ -404,6 +408,7 @@
 		},
 		change: function() {
 			this._index();
+			this._renderGroup();
 		},
 		refresh: function() {
 			if ($(this.element).find('option:selected').length) {
