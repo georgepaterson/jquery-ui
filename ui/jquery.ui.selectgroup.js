@@ -449,7 +449,8 @@
 			this.placeholder.find('.ui-selectgroup-copy').text(this.copy);
 		},
 		open: function() {
-			this.placeholder.addClass('ui-state-active');
+			this.placeholder.removeClass('ui-corner-all');
+			this.placeholder.addClass('ui-state-active ui-corner-top');
 			$.ui.selectgroup.group.show();
 			this.group.attr('aria-hidden', 'false');
 			this.isOpen = true;
@@ -458,6 +459,7 @@
 			if ($.ui.selectgroup.group.past !== null) {
 				$.ui.selectgroup.group.past.placeholder.removeClass('ui-state-active');
 			}
+			this.placeholder.addClass('ui-corner-all');
 			this.placeholder.removeClass('ui-state-active');
 			$.ui.selectgroup.group.hide();
 			this.group.attr('aria-hidden', 'true');
