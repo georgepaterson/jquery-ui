@@ -18,6 +18,13 @@
 				select: true,
 				option: true,
 				optionGroup: true
+			},
+			positioning: {
+				of: null,
+				my: 'left top',
+				at: 'left bottom',
+				offset: null,
+				collision: 'none'
 			}
 		},
 		isOpen: false,
@@ -226,9 +233,15 @@
 			});	
 		},
 		_position: function() {
-			var coordinates = this.placeholder.offset();
-			coordinates.top += this.placeholder.height();
-			$($.ui.selectgroup.group).css({'top': coordinates.top, 'left': coordinates.left});
+			var options = this.options;
+			$($.ui.selectgroup.group).css({'top': 0, 'left': 0});
+			$($.ui.selectgroup.group).position({
+				of: options.positioning.of || this.placeholder,
+				my: options.positioning.my,
+				at: options.positioning.at,
+				offset: options.positioning.offset,
+				collision: options.positioning.collision
+			});
 		},
 		_toggle: function() {
 			if ($.ui.selectgroup.group.past !== null) {
