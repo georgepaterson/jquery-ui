@@ -13,7 +13,12 @@
 	$.widget('ui.selectgroup', {
 		version: '@VERSION',
 		options: {
-			autoWidth: true
+			autoWidth: true,
+			classInherit: {
+				select: true,
+				option: true,
+				optionGroup: true
+			}
 		},
 		isOpen: false,
 		isActive: false,
@@ -40,6 +45,9 @@
 				+ 'role="button" aria-haspopup="true" aria-owns="' + this.widgetBaseClass + '-group">'
 				+ '<span class="' + this.widgetBaseClass + '-copy">'+ this.copy +'</span>'
 				+ '<span class="' + this.widgetBaseClass + '-icon ui-icon ui-icon-triangle-1-s"></span></a>');
+			if (this.options.classInherit.select) {
+				this.placeholder.addClass(this.element.attr('class'));
+			}
 			this.element.after(this.placeholder).hide();
 			this._placeholderEvents(true);
 			$('label[for="' + id + '"]').attr( 'for', this.identifiers[0] );
@@ -139,7 +147,9 @@
 				return {
 					element: $(value),
 					text: $(value).text(),
+					classname: $(value).attr('class'),
 					optgroup: $(value).parent('optgroup'),
+					optgroupClassname: $(value).parent('optgroup').attr('class'),
 					optDisabled: $(value).parent('optgroup').attr('disabled'),
 					value: $(value).attr('value'),
 					selected: $(value).attr('selected'),
@@ -163,6 +173,9 @@
 			var that = this;
 			$.each(this.selectors, function(index) {
 				var list = $('<li role="presentation"><a role="option" href="#">'+ this.text +'</a></li>');
+				if (that.options.classInherit.option) {
+					list.addClass(this.classname);
+				}
 				that._bind(list, {
 					'click': function(event) {
 						event.preventDefault();
@@ -195,12 +208,15 @@
 						that.group.find('li.' + name + ' ul').append(list);
 					}
 					else {
-						var opt = '<li class="' + name + ' ' + that.widgetBaseClass + '-optgroup"><span>'+ this.optgroup.attr('label') +'</span><ul></ul></li>';
+						var opt = $('<li class="' + name + ' ' + that.widgetBaseClass + '-optgroup"><span>'+ this.optgroup.attr('label') +'</span><ul></ul></li>');
+						if (that.options.classInherit.optionGroup) {
+							opt.addClass(this.optgroupClassname);
+						}
 						if (typeof this.optDisabled !== "undefined" && this.optDisabled === 'disabled') {
-							$(opt).addClass('ui-state-disabled').appendTo(that.group).find('ul').append(list);
+							opt.addClass('ui-state-disabled').appendTo(that.group).find('ul').append(list);
 						}
 						else {
-							$(opt).appendTo(that.group).find('ul').append(list);
+							opt.appendTo(that.group).find('ul').append(list);
 						}
 					}
 				}
