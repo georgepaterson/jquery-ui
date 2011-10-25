@@ -203,7 +203,7 @@
 					}
 				});
 				if (typeof this.selected !== "undefined" && this.selected === 'selected') {
-					list.addClass('ui-state-hover');
+					list.addClass('ui-state-active');
 					that.position = index;
 				}
 				if (typeof this.disabled !== "undefined" && this.disabled === 'disabled') {
