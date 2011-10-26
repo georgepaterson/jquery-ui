@@ -454,10 +454,6 @@
 		blur: function() {
 			this.isActive = false;
 		},
-		change: function() {
-			this._index();
-			this._renderGroup();
-		},
 		refresh: function() {
 			if ($(this.element).find('option:selected').length) {
 				this.copy = this.element.find('option:selected').text();
