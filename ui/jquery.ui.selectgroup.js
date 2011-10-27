@@ -63,13 +63,11 @@
 			}
 			this.element.after(this.placeholder).hide();
 			this._placeholderEvents(true);
-			$('label[for="' + id + '"]').attr( 'for', this.identifiers[0] );
-			this._bind($('label[for="' + this.identifiers[0] + '"]'), {
-				'click': function(event) {
+			$('label[for="' + id + '"]').attr( 'for', this.identifiers[0] )
+				.bind('click.selectgroup', function(event) {
 					event.preventDefault();
-					this.placeholder.focus();
-				}
-			});
+					that.placeholder.focus();
+				});
 			this._bind(document, {
 				'click': function(event) {
 					if (this.isOpen && !($(event.target).closest('.ui-selectgroup').length || $(event.target).closest('.ui-selectgroup-group').length)) {
@@ -83,77 +81,75 @@
 			});	
 		},
 		_placeholderEvents: function(value) {
-			if (value = true) {
-				this._bind(this.placeholder, {
-					'click': function(event) {
+			var that = this;
+			if (value === true) {
+				this.placeholder.removeClass('ui-state-disabled')
+					.bind('click.selectgroup', function(event) {
 						event.preventDefault();
-						this._toggle();
-					},
-					'keydown': function(event) {
+						that._toggle();
+					})
+					.bind('keydown.selectgroup', function(event) {
 						switch (event.keyCode) {
 							case $.ui.keyCode.ENTER:
 								event.preventDefault();
-								if (this.isOpen) {
-									this.close();
+								if (that.isOpen) {
+									that.close();
 								}
 								break;
 							case $.ui.keyCode.ESCAPE:
 								event.preventDefault();
-								if (this.isOpen) {
-									this.blur();
-									this.close();
+								if (that.isOpen) {
+									that.blur();
+									that.close();
 								}
 								break;
 							case $.ui.keyCode.UP:
 							case $.ui.keyCode.LEFT:
 								event.preventDefault();
-								if (!this.isActive) {
-									this.focus();
+								if (!that.isActive) {
+									that.focus();
 								}
-								this._traverse(-1);
+								that._traverse(-1);
 								break;
 							case $.ui.keyCode.DOWN:
 							case $.ui.keyCode.RIGHT:
 								event.preventDefault();
-								if (!this.isActive) {
-									this.focus();
+								if (!that.isActive) {
+									that.focus();
 								}
-								this._traverse(1);
+								that._traverse(1);
 								break;
 							case $.ui.keyCode.TAB:
-								if (!this.isActive) {
-									this.blur();
+								if (!that.isActive) {
+									that.blur();
 								}
-								if (this.isOpen) {
-									this.close();
+								if (that.isOpen) {
+									that.close();
 								}
 								break;
 							default:
 								event.preventDefault();
-								if (!this.isActive) {
-									this.focus();
+								if (!that.isActive) {
+									that.focus();
 								}
-								this._typeahead(String.fromCharCode(event.keyCode).toLowerCase());
+								that._typeahead(String.fromCharCode(event.keyCode).toLowerCase());
 								break;
 						}
-					},
-					'mouseover': function(event) {
+					})	
+					.bind('mouseover.selectgroup', function(event) {
 						$(this).addClass('ui-state-hover');
-					},
-					'mouseout': function(event) {
+					})
+					.bind('mouseout.selectgroup', function(event) {
 						$(this).removeClass('ui-state-hover');
-					}
-				});
+					});
 			}
 			else {
 				this.placeholder.addClass('ui-state-disabled').unbind('.selectgroup');
-				this._bind(this.placeholder, {
-					'click': function(event) {
-						event.preventDefault();
-					},
-					'keydown': function(event) {
-						event.preventDefault();
-					}
+				this.placeholder.bind('click.selectgroup', function(event) {
+					event.preventDefault();
+				})
+				.bind('keydown.selectgroup', function(event) {
+					event.preventDefault();
 				});
 			}
 		},
@@ -168,7 +164,7 @@
 					optDisabled: $(value).parent('optgroup').attr('disabled'),
 					value: $(value).attr('value'),
 					selected: $(value).attr('selected'),
-					disabled: $(value).attr('disabled'),
+					disabled: $(value).attr('disabled')
 				};
 			});
 		},
@@ -194,29 +190,30 @@
 		_renderOption: function() {
 			var that = this;
 			$.each(this.selectors, function(index) {
-				var list = $('<li role="presentation"><a role="option" href="#">'+ this.text +'</a></li>');
+				var self = this;
+				var list = $('<li role="presentation"><a role="option" href="#">'+ this.text +'</a></li>')
+					.bind('click.selectgroup', function(event) {
+						event.preventDefault();
+						if (!(self.disabled === 'disabled' || self.optDisabled === 'disabled')) {
+							that.copy = that.selectors[index].text;
+							that.placeholder.find('.ui-selectgroup-copy').text(that.copy);
+							that.element.find('option:selected').removeAttr("selected");
+							$(that.selectors[index].element).attr('selected', 'selected');
+							that.position = index;
+							that._toggle();
+						}
+					})
+					.bind('mouseover.selectgroup', function() {
+						if (!(self.disabled === 'disabled' || self.optDisabled === 'disabled')) {
+							$(this).addClass('ui-state-hover');
+						}
+					})
+					.bind('mouseout.selectmenu', function() {
+						$(this).removeClass('ui-state-hover');
+					});
 				if (that.options.classInherit.option) {
 					list.addClass(this.classname);
 				}
-				that._bind(list, {
-					'click': function(event) {
-						event.preventDefault();
-						that.copy = that.selectors[index].text;
-						that.placeholder.find('.ui-selectgroup-copy').text(that.copy);
-						that.element.find('option:selected').removeAttr("selected");
-						$(that.selectors[index].element).attr('selected', 'selected');
-						that.position = index;
-						that._toggle();
-					},
-					'mouseover': function(event) {
-						if (that.disabled !== 'disabled' && that.optDisabled !== 'disabled') {
-							$(list).addClass('ui-state-hover');
-						}
-					},
-					'mouseout': function(event) {
-						$(list).removeClass('ui-state-hover');
-					}
-				});
 				if (typeof this.selected !== "undefined" && this.selected === 'selected') {
 					list.addClass('ui-state-active');
 					that.position = index;
@@ -416,7 +413,6 @@
 				this.close();
 			}
 			if (typeof (index) == 'undefined') {
-				this.placeholder.removeClass('ui-state-disabled');
 				this._placeholderEvents(true);
 			}
 			else {
@@ -433,7 +429,6 @@
 				this.close();
 			}
 			if (typeof (index) == 'undefined') {
-				this.placeholder.addClass('ui-state-disabled');
 				this._placeholderEvents(false);
 			}
 			else {
