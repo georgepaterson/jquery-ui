@@ -26,20 +26,20 @@
 		
 		$('#option-disable').bind('click', function (event) {
 			event.preventDefault();
-			$('#test-two').selectgroup('disable', 1);
+			$('#test-two').selectgroup('disable', 1).selectgroup('change');
 		});
 		$('#option-enable').bind('click', function (event) {
 			event.preventDefault();
-			$('#test-two').selectgroup('enable', 1);
+			$('#test-two').selectgroup('enable', 1).selectgroup('change');
 		});
 		
 		$('#option-group-disable').bind('click', function (event) {
 			event.preventDefault();
-			$('#test-three').selectgroup('disable', 1, 'optgroup');
+			$('#test-three').selectgroup('disable', 1, 'optgroup').selectgroup('change');
 		});
 		$('#option-group-enable').bind('click', function (event) {
 			event.preventDefault();
-			$('#test-three').selectgroup('enable', 1, 'optgroup');
+			$('#test-three').selectgroup('enable', 1, 'optgroup').selectgroup('change');
 		});
 		
 		// add themeswitcher
