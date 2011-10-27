@@ -31,7 +31,6 @@
 		},
 		isOpen: false,
 		isActive: false,
-		isDisabled: false,
 		position: 0,
 		search: ['', '', 1, 1, 0],
 		timer: null,
@@ -447,6 +446,10 @@
 		},
 		blur: function() {
 			this.isActive = false;
+		},
+		change: function() {
+			this._index();
+			this._renderGroup();
 		},
 		refresh: function() {
 			if ($(this.element).find('option:selected').length) {
