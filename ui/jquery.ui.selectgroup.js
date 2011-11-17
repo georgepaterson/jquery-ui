@@ -8,6 +8,7 @@
  * Depends:
  * jquery.ui.core.js
  * jquery.ui.widget.js
+ * jquery.ui.position.js
  */
 (function($, undefined) {
 	$.widget('ui.selectgroup', {
@@ -67,17 +68,15 @@
 					event.preventDefault();
 					that.placeholder.focus();
 				});
-			this._bind(document, {
-				'click': function(event) {
-					if (this.isOpen && !($(event.target).closest('.ui-selectgroup').length || $(event.target).closest('.ui-selectgroup-group').length)) {
-						window.setTimeout( function() {
-							that.blur();
-							that.close();
-							$.ui.selectgroup.group.past = null;
-						}, (100));
-					}
+			$(document).bind('click.selectmenu', function(event) {
+				if (that.isOpen && !($(event.target).closest('.ui-selectgroup').length || $(event.target).closest('.ui-selectgroup-group').length)) {
+					window.setTimeout( function() {
+						that.blur();
+						that.close();
+						$.ui.selectgroup.group.past = null;
+					}, (100));
 				}
-			});	
+			});
 		},
 		_placeholderEvents: function(value) {
 			var that = this;
