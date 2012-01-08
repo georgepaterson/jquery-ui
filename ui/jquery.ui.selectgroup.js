@@ -381,7 +381,7 @@
 				if (this.search[1].length < 2) {
 					$.each(this.selectors, function(index) {
 						if (!found) {
-							if (that.selectors[index].text.toLowerCase().indexOf(that.search[1][0]) === 0) {
+							if ($.trim(that.selectors[index].text).toLowerCase().indexOf(that.search[1][0]) === 0) {
 								if (that.search[0] == that.search[1][0]) {
 									if (that.search[3] < index) {
 										focusOption(index);
@@ -396,7 +396,7 @@
 				else {
 					$.each(this.selectors, function(index) {
 						if (!found) {
-							if (that.selectors[index].text.toLowerCase().indexOf(that.search[1]) === 0) {
+							if ($.trim(that.selectors[index].text).toLowerCase().indexOf(that.search[1]) === 0) {
 								if (that.search[0][0] == that.search[1][0]) {
 									if (that.search[3] < index) {
 										focusOption(index);
@@ -412,7 +412,7 @@
 				// Iterate through the selectors with the new unrepeated character.
 				$.each(this.selectors, function(index) {
 					if (!found) {
-						if (that.search[1] === that.selectors[index].text.substring(0, that.search[1].length).toLowerCase()) {
+						if (that.search[1] === $.trim(that.selectors[index].text).substring(0, that.search[1].length).toLowerCase()) {
 							that.search[2] = index;
 							focusOption(index);
 						}
