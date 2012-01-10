@@ -517,6 +517,7 @@
 			this._position();
 			this.group.attr('aria-hidden', 'false');
 			this.isOpen = true;
+			this.placeholder[0].focus(); //Force focus back to the placeholder ready for any typeahead searches...
 		},
 		close: function() {
 			// Close the selectgroup.group.
