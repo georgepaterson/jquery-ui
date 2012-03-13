@@ -214,6 +214,7 @@
 							that.element.find('option:selected').removeAttr("selected");
 							$(that.selectors[index].element).attr('selected', 'selected');
 							that.position = index;
+							that.element.trigger('change');
 							that._toggle();
 						}
 					})
