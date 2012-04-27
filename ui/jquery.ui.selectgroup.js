@@ -531,6 +531,7 @@
 				this.placeholder.removeClass('ui-state-active');
 			}
 			$.ui.selectgroup.group.hide();
+			this.placeholder.focus();
 			this.group.attr('aria-hidden', 'true');
 			this.isOpen = false;
 		}
