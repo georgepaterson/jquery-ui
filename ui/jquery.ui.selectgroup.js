@@ -61,6 +61,8 @@
 			if (this.options.classInherit.select) {
 				this.placeholder.addClass(this.element.attr('class'));
 			}
+			// Gets the title attribute from the select element and apply to the placeholder element.
+			this.placeholder.attr('title',this.element.attr('title'));
 			// If the option to use the popup style is true then we need to add the popup classes.
 			if (this.options.style === 'popup') {
 				this.placeholder.addClass(this.widgetBaseClass + '-popup');
