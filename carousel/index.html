@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	    <title>jQuery UI forked by georgepaterson</title>
+		<link media="all" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
+		<link media="all" type="text/css" href="http://www.georgepaterson.com/wp-content/uploads/jquery-ui/jquery-ui-carousel/css/jquery.ui.carousel.css" rel="stylesheet">
+		<style>
+			body {
+			    color: #444955;
+			    font-family: Arial,sans-serif;
+			    font-size: 12px;
+			    text-rendering: auto;
+				min-width: 600px;
+			}
+		</style>
+		<script src="http://www.georgepaterson.com/wp-includes/js/jquery/jquery.js?ver=1.7.2"></script>
+		<script src="http://www.georgepaterson.com/wp-content/uploads/jquery-ui/js/jquery-ui.min.js"></script>
+		<script src="http://www.georgepaterson.com/wp-content/uploads/jquery-ui/jquery-ui-carousel/js/jquery.ui.carousel.js"></script>
+		<script>
+			jQuery().ready(function() {jQuery(".carousel").carousel();});
+		</script>
+	</head>
+	<body>
+		<h1>jQuery UI Carousel</h1>
+		<p>Example of jQuery UI Carousel using default options and UI Darkness theme.</p>
+		<div class="carousel">
+			<ul>
+				<li>
+					<img src="http://www.georgepaterson.com/wp-content/uploads/jquery-ui/jquery-ui-carousel/images/01.jpg" alt=" Battlestar Galactica ships 01">
+				</li>
+				<li>
+					<img src="http://www.georgepaterson.com/wp-content/uploads/jquery-ui/jquery-ui-carousel/images/05.jpg" alt=" Battlestar Galactica ships 05">
+				</li>
+				<li>
+					<img src="http://www.georgepaterson.com/wp-content/uploads/jquery-ui/jquery-ui-carousel/images/08.jpg" alt=" Battlestar Galactica ships 08">
+				</li>
+				<li>
+					<img src="http://www.georgepaterson.com/wp-content/uploads/jquery-ui/jquery-ui-carousel/images/10.jpg" alt=" Battlestar Galactica ships 10">
+				</li>
+				<li>
+					<img src="http://www.georgepaterson.com/wp-content/uploads/jquery-ui/jquery-ui-carousel/images/15.jpg" alt=" Battlestar Galactica ships 15">
+				</li>
+				<li>
+					<img src="http://www.georgepaterson.com/wp-content/uploads/jquery-ui/jquery-ui-carousel/images/16.jpg" alt=" Battlestar Galactica ships 16">
+				</li>
+				<li>
+					<img src="http://www.georgepaterson.com/wp-content/uploads/jquery-ui/jquery-ui-carousel/images/19.jpg" alt=" Battlestar Galactica ships 19">
+				</li>
+				<li>
+					<img src="http://www.georgepaterson.com/wp-content/uploads/jquery-ui/jquery-ui-carousel/images/20.jpg" alt=" Battlestar Galactica ships 20">
+				</li>
+			</ul>
+		</div>
+		<p>Current widget options:</p>
+		<ul>
+		<li>scroll - How many carousel  items to scroll on each event.</li>
+		<li>visible - How many carousel items are visible at one time.</li>
+		<li>itemWidth - The width of the carousel items can be set if not controlled by <abbr title="Cascading Style Sheet">CSS</a>. </li>
+		<li>setWidth - The width of the clip div will be calculated based on the width of the carousel item and visible items.</li>
+		<li>track - Whether the tracking element will be visible, displaying the current position of the carousel.</li>
+		<li>easing - The easing applied to the carousel. <a href="See http://jqueryui.com/demos/effect/#easing">See http://jqueryui.com/demos/effect/#easing</a></li>
+		<li>speed - The speed at which the carousel animates.</li>
+		</ul>
+		<p>The carousel requires jQuery, jquery.ui.core.js and jquery.ui.widget.js. jquery.effects.core.js is required for additional easing options.</p>
+		<p>This widget requires <a href="http://www.georgepaterson.com/wp-content/uploads/jquery-ui/jquery-ui-carousel/js/jquery.ui.carousel.js">jquery.ui.carousel.js</a> and CSS rules outlined in <a href="http://www.georgepaterson.com/wp-content/uploads/jquery-ui/jquery-ui-carousel/css/jquery.ui.carousel.css">jquery.ui.carousel.css</a>.</p>
+		<p>Images from <a href="http://www.syfy.com/battlestar/gallery/index.php?sub=ships">Battlestar Galactica</a>.</p>
+	</body>
+</html>
