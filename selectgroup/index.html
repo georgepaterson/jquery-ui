@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
+	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>jQuery UI forked by georgepaterson</title>
-	<link media="all" type="text/css" href="http://www.georgepaterson.com/wp-content/uploads/jquery-ui/jquery-ui-selectgroup/css/themes/base/jquery.ui.all.css" rel="stylesheet">
-	<link media="all" type="text/css" href="http://www.georgepaterson.com/wp-content/uploads/jquery-ui/jquery-ui-selectgroup/css/themes/base/jquery.ui.selectgroup.css" rel="stylesheet">
-	<link media="all" type="text/css" href="http://www.georgepaterson.com/wp-content/uploads/jquery-ui/jquery-ui-selectgroup/css/jquery.ui.selectgroup.css" rel="stylesheet">
-	<script src="http://www.georgepaterson.com/wp-includes/js/jquery/jquery.js?ver=1.7.2"></script>
-	<script src="http://www.georgepaterson.com/wp-content/uploads/jquery-ui/js/jquery-ui.min.js"></script>
-	<script src="http://www.georgepaterson.com/wp-content/uploads/jquery-ui/jquery-ui-selectgroup/js/jquery.ui.selectgroup.js"></script>
+	<link media="all" type="text/css" href="css/themes/base/jquery.ui.all.css" rel="stylesheet">
+	<link media="all" type="text/css" href="css/themes/base/jquery.ui.selectgroup.css" rel="stylesheet">
+	<link media="all" type="text/css" href="css/jquery.ui.selectgroup.css" rel="stylesheet">
+	<script src="script/jquery.js"></script>
+	<script src="script/jquery-ui.min.js"></script>
+	<script src="script/jquery.ui.selectgroup.js"></script>
 	<script>
 		jQuery().ready(function() {
 			jQuery('select').each(function() {
@@ -40,7 +41,7 @@
 				event.preventDefault();
 				jQuery('#test-fifteen').selectgroup('disable', 1, 'optgroup').selectgroup('change');
 			});
-			$('#option-group-enable').bind('click', function (event) {
+			jQuery('#option-group-enable').bind('click', function (event) {
 				event.preventDefault();
 				jQuery('#test-fifteen').selectgroup('enable', 1, 'optgroup').selectgroup('change');
 			});
